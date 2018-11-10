@@ -26,13 +26,13 @@ namespace TestApp {
 				TextSize = 40, 
 				Focusable = true
 			});
-			
+
 			Title = "TestApp";
 			Context.Widget = new VBox {
 				new Label("Testing labels!"), 
 				new Label("Some more testing"),
 				new Button { Label = new Label("Button!") }
-					.Click(button => button.Focused = true),
+					.Click(_ => buttonStyle.TextSize += 5),
 				new HBox {
 					new Label("And even more").AddStyle(".testing"), 
 					new Label("Aaaaand more")

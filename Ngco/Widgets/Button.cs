@@ -33,8 +33,9 @@ namespace Ngco.Widgets {
 			canvas.Restore();
 		}
 
-		public override bool KeyPress(char key) {
-			key.Print();
+		public override bool KeyUp(Key key) {
+			if(key != Key.Enter && key != Key.Space) return false;
+			Click();
 			return true;
 		}
 
