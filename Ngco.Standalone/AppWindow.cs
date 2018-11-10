@@ -43,5 +43,8 @@ namespace Ngco.Standalone {
 
 		protected override void OnMouseUp(MouseButtonEventArgs e) =>
 			Context.MouseUp(FromOpenTK(e.Button));
+
+		protected override void OnKeyPress(KeyPressEventArgs e) =>
+			Context.HandleKeyPress(e.KeyChar);
 	}
 }

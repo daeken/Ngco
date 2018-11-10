@@ -39,7 +39,8 @@ namespace Ngco {
 			return false;
 		}
 
-		public bool HandleKeyPress() {
+		public bool HandleKeyPress(char c) {
+			c.Print();
 			return false;
 		}
 
