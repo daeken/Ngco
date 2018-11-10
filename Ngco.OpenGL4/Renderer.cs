@@ -16,13 +16,11 @@ namespace Ngco.OpenGL4Renderer {
 			var glInterface = GRGlInterface.CreateNativeGlInterface();
 			Context = GRContext.Create(GRBackend.OpenGL, glInterface);
 			
-			GL.GetFramebufferAttachmentParameter(FramebufferTarget.Framebuffer, FramebufferAttachment.FrontLeft, FramebufferParameterName.FramebufferAttachmentStencilSize, out var stencilBits);
-			
 			RenderTarget = new GRBackendRenderTargetDesc {
 				Config = GRPixelConfig.Bgra8888, 
 				Origin = GRSurfaceOrigin.BottomLeft, 
 				SampleCount = 0, 
-				StencilBits = stencilBits, 
+				StencilBits = 8, 
 				RenderTargetHandle = (IntPtr) 0
 			};
 		}

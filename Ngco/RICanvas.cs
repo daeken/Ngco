@@ -31,7 +31,7 @@ namespace Ngco {
 
 		public void DrawRect(float left, float top, float w, float h, SKPaint paint) =>
 			Canvas.DrawRect(left * Scale, top * Scale, w * Scale, h * Scale, ScalePaint(paint));
-
+		
 		public void DrawText(string text, float x, float y, SKPaint paint) =>
 			Canvas.DrawText(text, x * Scale, y * Scale, ScalePaint(paint));
 	}
