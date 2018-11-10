@@ -44,6 +44,46 @@ namespace Ngco.Standalone {
 		protected override void OnMouseUp(MouseButtonEventArgs e) =>
 			Context.MouseUp(FromOpenTK(e.Button));
 
+		Key? ConvertKey(OpenTK.Input.Key key) {
+			switch(key) {
+				case OpenTK.Input.Key.LControl:
+				case OpenTK.Input.Key.RControl:
+					return Key.Ctrl;
+				case OpenTK.Input.Key.LAlt:
+				case OpenTK.Input.Key.RAlt:
+					return Key.Alt;
+				case OpenTK.Input.Key.LWin:
+				case OpenTK.Input.Key.RWin:
+					return Key.Win;
+				case OpenTK.Input.Key.LShift:
+				case OpenTK.Input.Key.RShift:
+					return Key.Shift;
+				case OpenTK.Input.Key.Space: return Key.Space;
+				case OpenTK.Input.Key.Enter: return Key.Enter;
+				case OpenTK.Input.Key.BackSpace: return Key.Backspace;
+				case OpenTK.Input.Key.Delete: return Key.Delete;
+				case OpenTK.Input.Key.Tab: return Key.Tab;
+				case OpenTK.Input.Key.Escape: return Key.Escape;
+				case OpenTK.Input.Key.Up: return Key.Up;
+				case OpenTK.Input.Key.Down: return Key.Down;
+				case OpenTK.Input.Key.Left: return Key.Left;
+				case OpenTK.Input.Key.Right: return Key.Right;
+			}
+			return null;
+		}
+
+		protected override void OnKeyDown(KeyboardKeyEventArgs e) {
+			var key = ConvertKey(e.Key);
+			if(key != null)
+				Context.HandleKeyDown(key.Value);
+		}
+
+		protected override void OnKeyUp(KeyboardKeyEventArgs e) {
+			var key = ConvertKey(e.Key);
+			if(key != null)
+				Context.HandleKeyUp(key.Value);
+		}
+
 		protected override void OnKeyPress(KeyPressEventArgs e) =>
 			Context.HandleKeyPress(e.KeyChar);
 	}

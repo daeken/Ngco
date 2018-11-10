@@ -17,6 +17,16 @@ namespace Ngco {
 		public BaseWidget Parent;
 		
 		public Rect BoundingBox { get; protected set; }
+
+		public bool Focused {
+			get => this == Context.Instance.Focused;
+			set {
+				if(Style.Focusable.Value && value)
+					Context.Instance.Focused = this;
+				else if(Focused)
+					Context.Instance.Focused = null;
+			}
+		}
 		
 		public abstract void Render(RICanvas canvas);
 		public abstract Rect CalculateBoundingBox(Rect region);
@@ -45,6 +55,10 @@ namespace Ngco {
 				child.MouseMove(buttons, location);
 			return true;
 		}
+
+		public virtual bool KeyDown(Key key) => false;
+		public virtual bool KeyUp(Key key) => false;
+		public virtual bool KeyPress(char key) => false;
 
 		public void UpdateAll(Action<BaseWidget> callback) {
 			callback(this);

@@ -28,9 +28,14 @@ namespace Ngco.Widgets {
 			canvas.DrawRect(
 				BoundingBox.TopLeft.X + 4, BoundingBox.TopLeft.Y + 4, 
 				BoundingBox.Size.Width - 4, BoundingBox.Size.Height - 4, 
-				new SKPaint { Color = Color.White, IsStroke = true, StrokeWidth = MouseOver ? 4 : 2 }
+				new SKPaint { Color = Color.White, IsStroke = true, StrokeWidth = MouseOver || Focused ? 4 : 2 }
 			);
 			canvas.Restore();
+		}
+
+		public override bool KeyPress(char key) {
+			key.Print();
+			return true;
 		}
 
 		public override void MouseUp(MouseButton button, Point location) {

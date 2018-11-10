@@ -11,7 +11,9 @@ namespace TestApp {
 			Context.BaseStyle = new Style {
 				TextSize = 30, 
 				FontFamily = "Arial", 
-				TextColor = Color.White
+				TextColor = Color.White, 
+				Focusable = false, 
+				Enabled = true
 			};
 			
 			Context.Add(new Style("hbox > .testing") {
@@ -21,7 +23,8 @@ namespace TestApp {
 			
 			var buttonStyle = Context.Add(new Style("button") {
 				TextColor = Color.Blue, 
-				TextSize = 40
+				TextSize = 40, 
+				Focusable = true
 			});
 			
 			Title = "TestApp";
@@ -29,7 +32,7 @@ namespace TestApp {
 				new Label("Testing labels!"), 
 				new Label("Some more testing"),
 				new Button { Label = new Label("Button!") }
-					.Click(_ => Context.Renderer.Scale += 0.1f),
+					.Click(button => button.Focused = true),
 				new HBox {
 					new Label("And even more").AddStyle(".testing"), 
 					new Label("Aaaaand more")

@@ -14,6 +14,8 @@ namespace Ngco {
 		public MouseButton MouseButtons;
 
 		public Style BaseStyle;
+
+		public BaseWidget Focused;
 		
 		public readonly List<Style> Styles = new List<Style>();
 
@@ -31,18 +33,24 @@ namespace Ngco {
 			});
 		}
 
-		public bool HandleKeyDown() {
-			return false;
+		bool CallAll(BaseWidget inner, Func<BaseWidget, bool> func) {
+			var clist = new List<BaseWidget>();
+			while(inner != null) {
+				clist.Add(inner);
+				inner = inner.Parent;
+			}
+			clist.Reverse();
+
+			var handled = false;
+			foreach(var elem in clist)
+				if(func(elem))
+					handled = true;
+			return handled;
 		}
 
-		public bool HandleKeyUp() {
-			return false;
-		}
-
-		public bool HandleKeyPress(char c) {
-			c.Print();
-			return false;
-		}
+		public bool HandleKeyDown(Key key) => Focused != null && CallAll(Focused, x => x.KeyDown(key));
+		public bool HandleKeyUp(Key key) => Focused != null && CallAll(Focused, x => x.KeyUp(key));
+		public bool HandleKeyPress(char key)  => Focused != null && CallAll(Focused, x => x.KeyPress(key));
 
 		public bool MouseDown(MouseButton button) {
 			if(!(Widget?.MouseDown(button, MouseLocation) ?? false)) return false;
