@@ -22,7 +22,7 @@ namespace Ngco.Widgets {
 		public override void Render(RICanvas canvas) {
 			var paint = Paint;
 			canvas.Save();
-			canvas.ClipRect(BoundingBox);
+			canvas.ClipRect(BoundingBox.Inset(BoundingBox.Size * -0.1f));
 			canvas.DrawText(Text, BoundingBox.TopLeft.X, BoundingBox.TopLeft.Y - (paint.FontSpacing - Style.TextSize.Value) + Style.TextSize.Value, paint);
 			canvas.Restore();
 		}
