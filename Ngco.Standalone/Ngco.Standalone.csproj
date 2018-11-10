@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Ngco.OpenGL4\Ngco.OpenGL4.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="OpenTK.NETCore" Version="1.1.2749.6433" />
+    </ItemGroup>
+
+</Project>

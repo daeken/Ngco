@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ngco", "Ngco\Ngco.csproj", "{32D541BE-ACAC-4A61-AEF8-9885244FE4F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ngco.OpenGL4", "Ngco.OpenGL4\Ngco.OpenGL4.csproj", "{0D099C0B-E7FE-4B7B-B382-AD66F0CDB03C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ngco.Standalone", "Ngco.Standalone\Ngco.Standalone.csproj", "{67AC46C4-5F68-4F65-A0A4-735495A43819}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{20D514BC-A3D4-431F-BA30-8B9D360C0AEB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32D541BE-ACAC-4A61-AEF8-9885244FE4F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32D541BE-ACAC-4A61-AEF8-9885244FE4F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32D541BE-ACAC-4A61-AEF8-9885244FE4F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32D541BE-ACAC-4A61-AEF8-9885244FE4F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D099C0B-E7FE-4B7B-B382-AD66F0CDB03C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D099C0B-E7FE-4B7B-B382-AD66F0CDB03C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D099C0B-E7FE-4B7B-B382-AD66F0CDB03C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D099C0B-E7FE-4B7B-B382-AD66F0CDB03C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67AC46C4-5F68-4F65-A0A4-735495A43819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67AC46C4-5F68-4F65-A0A4-735495A43819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67AC46C4-5F68-4F65-A0A4-735495A43819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67AC46C4-5F68-4F65-A0A4-735495A43819}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20D514BC-A3D4-431F-BA30-8B9D360C0AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20D514BC-A3D4-431F-BA30-8B9D360C0AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20D514BC-A3D4-431F-BA30-8B9D360C0AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20D514BC-A3D4-431F-BA30-8B9D360C0AEB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
