@@ -26,7 +26,7 @@ namespace Ngco {
 			Widget?.UpdateAll(x => x.UpdateStyles());
 			Renderer.Render(canvas => {
 				canvas.Clear();
-				Widget?.CalculateBoundingBox(new Rect(0, 0, Renderer.Width, Renderer.Height));
+				Widget?.CalculateBoundingBox(new Rect(0, 0, (int) Math.Ceiling(Renderer.Width / Renderer.Scale), (int) Math.Ceiling(Renderer.Height / Renderer.Scale)));
 				Widget?.Render(canvas);
 			});
 		}

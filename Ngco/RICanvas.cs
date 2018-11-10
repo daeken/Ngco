@@ -10,6 +10,13 @@ namespace Ngco {
 			Scale = scale;
 		}
 
+		SKPaint ScalePaint(SKPaint paint) {
+			paint = paint.Clone();
+			paint.TextSize *= Scale;
+			paint.StrokeWidth *= Scale;
+			return paint;
+		}
+
 		public void Clear() => Canvas.Clear();
 		public void Clear(SKColor color) => Canvas.Clear(color);
 
@@ -23,12 +30,9 @@ namespace Ngco {
 			));
 
 		public void DrawRect(float left, float top, float w, float h, SKPaint paint) =>
-			Canvas.DrawRect(left * Scale, top * Scale, w * Scale, h * Scale, paint);
+			Canvas.DrawRect(left * Scale, top * Scale, w * Scale, h * Scale, ScalePaint(paint));
 
-		public void DrawText(string text, float x, float y, SKPaint paint) {
-			paint = paint.Clone();
-			paint.TextSize *= Scale;
-			Canvas.DrawText(text, x * Scale, y * Scale, paint);
-		}
+		public void DrawText(string text, float x, float y, SKPaint paint) =>
+			Canvas.DrawText(text, x * Scale, y * Scale, ScalePaint(paint));
 	}
 }

@@ -29,7 +29,7 @@ namespace TestApp {
 				new Label("Testing labels!"), 
 				new Label("Some more testing"),
 				new Button { Label = new Label("Button!") }
-					.Click(_ => Context.Renderer.Scale -= 0.1f),
+					.Click(_ => Context.Renderer.Scale += 0.1f),
 				new HBox {
 					new Label("And even more").AddStyle(".testing"), 
 					new Label("Aaaaand more")

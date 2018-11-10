@@ -1,3 +1,5 @@
+using System;
+
 namespace Ngco {
 	public struct Size {
 		public static Size Infinite = new Size(-1, -1);
@@ -21,6 +23,11 @@ namespace Ngco {
 		public static Size operator *(Size a, int scalar) => new Size(
 			a.Width == -1 ? -1 : a.Width * scalar, 
 			a.Height == -1 ? -1 : a.Height * scalar
+		);
+		
+		public static Size operator *(Size a, float scalar) => new Size(
+			(int) Math.Round(a.Width == -1 ? -1 : a.Width * scalar), 
+			(int) Math.Round(a.Height == -1 ? -1 : a.Height * scalar)
 		);
 	}
 }
