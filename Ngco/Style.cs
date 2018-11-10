@@ -63,5 +63,31 @@ namespace Ngco {
 			}
 			set => _FontFamily = value;
 		}
+		
+		bool? _Focusable;
+		public bool? Focusable {
+			get {
+				if(_Focusable != null) return _Focusable;
+				foreach(var style in Parents) {
+					var val = style.Focusable;
+					if(val != null) return val;
+				}
+				return Parents.Count != 0 ? null : Context.Instance.BaseStyle._Focusable;
+			}
+			set => _Focusable = value;
+		}
+		
+		bool? _Enabled;
+		public bool? Enabled {
+			get {
+				if(_Enabled != null) return _Enabled;
+				foreach(var style in Parents) {
+					var val = style.Enabled;
+					if(val != null) return val;
+				}
+				return Parents.Count != 0 ? null : Context.Instance.BaseStyle._Enabled;
+			}
+			set => _Enabled = value;
+		}
 	}
 }
