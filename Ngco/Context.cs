@@ -49,7 +49,37 @@ namespace Ngco {
 		}
 
 		public bool HandleKeyDown(Key key) => Focused != null && CallAll(Focused, x => x.KeyDown(key));
-		public bool HandleKeyUp(Key key) => Focused != null && CallAll(Focused, x => x.KeyUp(key));
+		public bool HandleKeyUp(Key key) {
+			if(Focused != null && CallAll(Focused, x => x.KeyUp(key))) return true;
+			if(key == Key.Tab) {
+				var next = FindNextFocusable(Focused ?? Widget);
+				if(next == null) return false;
+				next.Focused = true;
+				next.Print();
+				return true;
+			}
+			return false;
+		}
+
+		BaseWidget FindNextFocusable(BaseWidget cur) {
+			BaseWidget FindBelow(BaseWidget widget) {
+				if(cur != widget && widget.Focusable)
+					return widget;
+				foreach(var elem in widget) {
+					var bn = FindBelow(elem);
+					if(bn != null) return bn;
+				}
+				return null;
+			}
+			BaseWidget FindAbove(BaseWidget widget) {
+				return null;
+			}
+
+			var next = FindBelow(cur);
+			if(next != null) return next;
+			return FindAbove(cur);
+		}
+
 		public bool HandleKeyPress(char key)  => Focused != null && CallAll(Focused, x => x.KeyPress(key));
 
 		public bool MouseDown(MouseButton button) {

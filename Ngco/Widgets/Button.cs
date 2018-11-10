@@ -5,12 +5,17 @@ using SkiaSharp;
 
 namespace Ngco.Widgets {
 	public class Button : BaseWidget {
-		Label _Label;
-		public Label Label {
+		BaseWidget _Label;
+		public BaseWidget Label {
 			get => _Label;
 			set => (_Label = value).Parent = this;
 		}
-		public event Action<Button> Clicked; 
+		public event Action<Button> Clicked;
+
+		public override bool IsFocusable => true;
+
+		public Button(BaseWidget label = null) =>
+			Label = label;
 
 		public override IEnumerator<BaseWidget> GetEnumerator() =>
 			new List<BaseWidget> { Label }.GetEnumerator();

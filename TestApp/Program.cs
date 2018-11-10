@@ -31,8 +31,10 @@ namespace TestApp {
 			Context.Widget = new VBox {
 				new Label("Testing labels!"), 
 				new Label("Some more testing"),
-				new Button { Label = new Label("Button!") }
+				new Button(new Label("Button A"))
 					.Click(_ => buttonStyle.TextSize += 5),
+				new Button(new Label("Button B"))
+					.Click(_ => "B".Print()),
 				new HBox {
 					new Label("And even more").AddStyle(".testing"), 
 					new Label("Aaaaand more")

@@ -15,7 +15,9 @@ namespace Ngco {
 		bool StylesDirty = true;
 
 		public BaseWidget Parent;
-		
+
+		public virtual bool IsFocusable => false;
+		public bool Focusable => IsFocusable && (Style.Focusable ?? false);
 		public Rect BoundingBox { get; protected set; }
 
 		public bool Focused {
