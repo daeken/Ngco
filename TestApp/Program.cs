@@ -9,25 +9,27 @@ namespace TestApp {
 
 		Program() {
 			Context.BaseStyle = new Style {
-				TextSize = 30, 
+				TextSize   = 30, 
 				FontFamily = "Arial", 
-				TextColor = Color.White, 
-				Focusable = false, 
-				Enabled = true
+				TextColor  = Color.White, 
+				Focusable  = false, 
+				Enabled    = true
 			};
 			
 			Context.Add(new Style("hbox > .testing") {
 				TextColor = Color.Green, 
-				TextSize = 75
+				TextSize  = 75
 			});
 			
 			var buttonStyle = Context.Add(new Style("button") {
-				TextColor = Color.Blue, 
-				TextSize = 40, 
-				Focusable = true
-			});
+				TextColor    = Color.Black, 
+				TextSize     = 16, 
+				Focusable    = true,
+                CornerRadius = 5.0f
+            });
 
 			Title = "TestApp";
+
 			Context.Widget = new VBox {
 				new Label("Testing labels!"), 
 				new Label("Some more testing"),
