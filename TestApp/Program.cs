@@ -10,9 +10,11 @@ namespace TestApp {
 
 		Program() {
 			Context.BaseStyle = new Style {
+				BackgroundColor = Color.Transparent,
+				OutlineColor = Color.Purple, 
+				TextColor  = Color.White,
 				TextSize   = 30,
 				FontFamily = "Arial",
-				TextColor  = Color.White,
 				Focusable  = false,
 				Enabled    = true, 
 				CornerRadius = 0
@@ -24,12 +26,23 @@ namespace TestApp {
 			});
 
 			var buttonStyle = Context.Add(new Style("button") {
+				BackgroundColor = Color.Win10Grey, 
+				OutlineColor = Color.Win10GreyDark, 
 				TextColor    = Color.Black,
 				TextSize     = 16,
 				Focusable    = true
 			});
 
-			var radiusStyle = Context.Add(new Style("button .radius") {
+			Context.Add(new Style("button :hover") {
+				BackgroundColor = new Color(180, 213, 230), 
+				OutlineColor = Color.Win10Blue
+			});
+
+			Context.Add(new Style("button :active") {
+				BackgroundColor = new Color(156, 213, 230)
+			});
+
+			Context.Add(new Style("button .radius") {
 				CornerRadius = 10
 			});
 

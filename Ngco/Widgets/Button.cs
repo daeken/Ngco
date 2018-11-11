@@ -38,37 +38,15 @@ namespace Ngco.Widgets {
 
 			canvas.DrawRect(
 				position, size,
-				new SKPaint { Color = Color.Win10Grey, IsAntialias = true },
+				new SKPaint { Color = Style.BackgroundColor, IsAntialias = true },
 				round
 			);
 
 			canvas.DrawRect(
 				position, size,
-				new SKPaint { Color = Color.Win10GreyDark, IsAntialias = true, IsStroke = true, StrokeWidth = 1 },
+				new SKPaint { Color = Style.OutlineColor, IsAntialias = true, IsStroke = true, StrokeWidth = 1 },
 				round
 			);
-
-			if(MouseOver || Focused) {
-				canvas.DrawRect(
-					position, size,
-					new SKPaint { Color = Color.Win10Blue, IsAntialias = true, IsStroke = true, StrokeWidth = 1 },
-					round
-				);
-
-				canvas.DrawRect(
-					position, size,
-					new SKPaint { Color = Color.Win10BlueOver, IsAntialias = true },
-					round
-				);
-
-				if(MouseCurrentlyClicked) {
-					canvas.DrawRect(
-						position, size,
-						new SKPaint { Color = Color.Win10BlueOverDark, IsAntialias = true },
-						round
-					);
-				}
-			}
 
 			Label.Render(canvas);
 			canvas.Restore();

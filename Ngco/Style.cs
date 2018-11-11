@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
+using SkiaSharp;
 
 namespace Ngco {
 	public class Style {
@@ -10,7 +11,39 @@ namespace Ngco {
 
 		public Style(string selector = "") =>
 			Selector = new Selector(selector);
-
+		
+		Color backgroundColor;
+		Color _BackgroundColor {
+			get {
+				if(backgroundColor != null) return backgroundColor;
+				foreach(var style in Parents) {
+					var val = style._BackgroundColor;
+					if(val != null) return val;
+				}
+				return null;
+			}
+		}
+		public Color BackgroundColor {
+			get => _BackgroundColor ?? (Context.Instance.BaseStyle.backgroundColor ?? throw new NoNullAllowedException());
+			set => backgroundColor = value;
+		}
+		
+		Color outlineColor;
+		Color _OutlineColor {
+			get {
+				if(outlineColor != null) return outlineColor;
+				foreach(var style in Parents) {
+					var val = style._OutlineColor;
+					if(val != null) return val;
+				}
+				return null;
+			}
+		}
+		public Color OutlineColor {
+			get => _OutlineColor ?? (Context.Instance.BaseStyle.outlineColor ?? throw new NoNullAllowedException());
+			set => outlineColor = value;
+		}
+		
 		Color textColor;
 		Color _TextColor {
 			get {

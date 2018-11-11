@@ -7,7 +7,7 @@ namespace Ngco {
 		public readonly List<ISelector> Selectors = new List<ISelector>();
 		
 		public Selector(string selector) {
-			foreach(var match in Regex.Matches(selector, @"(\.[^.#> ]+|#[^.#> ]+|[^.#> ]+|>)")) {
+			foreach(var match in Regex.Matches(selector, @"(\.[^.#> ]+|#[^.#> ]+|[^.#> ]+|>|:hover)")) {
 				var sel = match.ToString();
 				if(sel[0] == '#')
 					Selectors.Add(new IdSelector { Id = sel.Substring(1) });
@@ -15,6 +15,10 @@ namespace Ngco {
 					Selectors.Add(new ClassSelector { Class = sel.Substring(1) });
 				else if(sel == ">")
 					Selectors.Add(new DescendentSelector());
+				else if(sel == ":hover")
+					Selectors.Add(new HoverSelector());
+				else if(sel == ":active")
+					Selectors.Add(new ActiveSelector());
 				else
 					Selectors.Add(new WidgetSelector { Class = sel });
 			}
@@ -51,5 +55,13 @@ namespace Ngco {
 
 	public class DescendentSelector : ISelector {
 		public BaseWidget Match(BaseWidget widget) => widget.Parent;
+	}
+
+	public class HoverSelector : ISelector {
+		public BaseWidget Match(BaseWidget widget) => widget.MouseOver ? widget : null;
+	}
+
+	public class ActiveSelector : ISelector {
+		public BaseWidget Match(BaseWidget widget) => widget.MouseCurrentlyClicked ? widget : null;
 	}
 }

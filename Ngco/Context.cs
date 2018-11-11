@@ -161,7 +161,9 @@ namespace Ngco {
 		}
 
 		public Style Add(Style style) {
+			Styles.Reverse();
 			Styles.Add(style);
+			Styles.Reverse();
 			return style;
 		}
 

@@ -30,13 +30,28 @@ namespace Ngco {
 
 		public string Id;
 		public BaseWidget Parent;
-		public bool MouseOver;
-		public bool MouseCurrentlyClicked;
+
+		bool _MouseOver;
+		public bool MouseOver {
+			get => _MouseOver;
+			set {
+				StylesDirty = StylesDirty || _MouseOver != value;
+				_MouseOver = value;
+			}
+		}
+		bool _MouseCurrentlyClicked;
+		public bool MouseCurrentlyClicked {
+			get => _MouseCurrentlyClicked;
+			set {
+				StylesDirty = StylesDirty || _MouseCurrentlyClicked != value;
+				_MouseCurrentlyClicked = value;
+			}
+		}
 
 		bool StylesDirty = true;
 
 		public virtual bool MouseDown(MouseButton button, Point location) {
-			if(!BoundingBox.Contains(location)) {
+			if(button == MouseButton.Left && !BoundingBox.Contains(location)) {
 				MouseCurrentlyClicked = false;
 				return false;
 			}
@@ -44,12 +59,16 @@ namespace Ngco {
 			foreach(var child in this)
 				child.MouseDown(button, location);
 
-			MouseCurrentlyClicked = true;
-
+			if(button == MouseButton.Left)
+				MouseCurrentlyClicked = true;
+			
 			return true;
 		}
 
 		public virtual void MouseUp(MouseButton button, Point location) {
+			if(button == MouseButton.Left)
+				MouseCurrentlyClicked = false;
+			
 			if(BoundingBox.Contains(location))
 				foreach(var child in this)
 					child.MouseUp(button, location);
@@ -98,6 +117,10 @@ namespace Ngco {
 			while(parent != null) {
 				Style.Parents.AddRange(parent.Style.Parents);
 				parent = parent.Parent;
+			}
+			foreach(var child in this) {
+				child.StylesDirty = true;
+				child.UpdateStyles();
 			}
 		}
 
