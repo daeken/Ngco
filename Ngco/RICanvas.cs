@@ -33,12 +33,13 @@ namespace Ngco {
 		public void DrawLine(float x0, float y0, float x1, float y1, SKPaint paint) =>
 			Canvas.DrawRect(x0 * Scale, y0 * Scale, x1 * Scale, y1 * Scale, ScalePaint(paint));
 
-		public void DrawRect(float left, float top, float w, float h, SKPaint paint) =>
-			Canvas.DrawRect(left * Scale, top * Scale, w * Scale, h * Scale, ScalePaint(paint));
+		public void DrawRect(Point position, Point size, SKPaint paint, Point? round = null)
+		{
+			round = round ?? new Point();
 
-		public void DrawRoundRect(float left, float top, float w, float h, float rx, float ry, SKPaint paint) =>
-			Canvas.DrawRoundRect(left * Scale, top * Scale, w * Scale, h * Scale, rx * Scale, ry * Scale,
+			Canvas.DrawRoundRect(position.X * Scale, position.Y * Scale, size.X * Scale, size.Y * Scale, round.Value.X * Scale, round.Value.Y * Scale,
 				ScalePaint(paint));
+		}
 
 		public void DrawText(string text, float x, float y, SKPaint paint) =>
 			Canvas.DrawText(text, x * Scale, y * Scale, ScalePaint(paint));

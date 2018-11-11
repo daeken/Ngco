@@ -32,38 +32,40 @@ namespace Ngco.Widgets {
 			canvas.Save();
 			canvas.ClipRect(BoundingBox);
 
-			var left = BoundingBox.TopLeft.X;
-			var right = BoundingBox.TopLeft.Y;
-			var width = BoundingBox.Size.Width;
-			var height = BoundingBox.Size.Height;
-			var radiusX = Style.CornerRadius.Value;
-			var radiusY = Style.CornerRadius.Value;
+			var position = new Point(BoundingBox.TopLeft.X, BoundingBox.TopLeft.Y);
+			var size     = new Point(BoundingBox.Size.Width, BoundingBox.Size.Height);
+			var round    = new Point(Style.CornerRadius.Value, Style.CornerRadius.Value);
 
-			canvas.DrawRoundRect(
-				left, right, width, height, radiusX, radiusY,
-				new SKPaint { Color = Color.Win10Grey, IsAntialias = true }
+			canvas.DrawRect(
+				position, size,
+				new SKPaint { Color = Color.Win10Grey, IsAntialias = true },
+				round
 			);
 
-			canvas.DrawRoundRect(
-				left, right, width, height, radiusX, radiusY,
-				new SKPaint { Color = Color.Win10GreyDark, IsAntialias = true, IsStroke = true, StrokeWidth = 1 }
+			canvas.DrawRect(
+				position, size,
+				new SKPaint { Color = Color.Win10GreyDark, IsAntialias = true, IsStroke = true, StrokeWidth = 1 },
+				round
 			);
 
 			if(MouseOver || Focused) {
-				canvas.DrawRoundRect(
-					left, right, width, height, radiusX, radiusY,
-					new SKPaint { Color = Color.Win10Blue, IsAntialias = true, IsStroke = true, StrokeWidth = 1 }
+				canvas.DrawRect(
+					position, size,
+					new SKPaint { Color = Color.Win10Blue, IsAntialias = true, IsStroke = true, StrokeWidth = 1 },
+					round
 				);
 
-				canvas.DrawRoundRect(
-					left, right, width, height, radiusX, radiusY,
-					new SKPaint { Color = Color.Win10BlueOver, IsAntialias = true }
+				canvas.DrawRect(
+					position, size,
+					new SKPaint { Color = Color.Win10BlueOver, IsAntialias = true },
+					round
 				);
 
 				if(MouseCurrentlyClicked) {
-					canvas.DrawRoundRect(
-						left, right, width, height, radiusX, radiusY,
-						new SKPaint { Color = Color.Win10BlueOverDark, IsAntialias = true }
+					canvas.DrawRect(
+						position, size,
+						new SKPaint { Color = Color.Win10BlueOverDark, IsAntialias = true },
+						round
 					);
 				}
 			}
