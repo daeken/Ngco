@@ -1,13 +1,11 @@
-﻿using System;
-using Ngco.OpenGL4Renderer;
-using Ngco.Widgets;
+﻿using Ngco.OpenGL4Renderer;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
-using PrettyPrinter;
+using System;
 
 namespace Ngco.Standalone {
-	public class AppWindow : GameWindow {
+    public class AppWindow : GameWindow {
 		public readonly new Context Context;
 
 		public AppWindow() : base(
@@ -16,7 +14,7 @@ namespace Ngco.Standalone {
 		) => Context = new Context(new Renderer { Scale = 2 });
 
 		protected override void OnRenderFrame(FrameEventArgs e) {
-			Context.Renderer.Width = Width;
+			Context.Renderer.Width  = Width;
 			Context.Renderer.Height = Height;
 			Context.Render();
 			SwapBuffers();

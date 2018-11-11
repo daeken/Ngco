@@ -6,8 +6,9 @@ namespace Ngco.Widgets {
 		public string Text;
 		
 		SKPaint Paint => new SKPaint {
-			Color = Style.TextColor, 
-			TextSize = Style.TextSize.Value, 
+			Color = Style.TextColor,
+            IsAntialias = true,
+            TextSize = Style.TextSize.Value, 
 			Typeface = SKTypeface.FromFamilyName(Style.FontFamily ?? "Arial")
 		};
 

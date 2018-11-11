@@ -1,9 +1,6 @@
-using System;
-using SkiaSharp;
-
 namespace Ngco.Widgets {
-	public class HBox : BaseContainer {
-		public int Spacing = 10;
+    public class HBox : BaseContainer {
+		public int Spacing  = 10;
 		public int HPadding = 10;
 		public int VPadding = 10;
 

@@ -1,45 +1,53 @@
+using MoreLinq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using MoreLinq;
-using PrettyPrinter;
-using SkiaSharp;
 
 namespace Ngco {
-	public abstract class BaseWidget : IEnumerable<BaseWidget> {
-		public string Id;
-		public readonly List<string> Classes = new List<string>();
-		public readonly Style Style = new Style();
-		bool StylesDirty = true;
+    public abstract class BaseWidget : IEnumerable<BaseWidget> {
 
-		public BaseWidget Parent;
+        public Rect BoundingBox { get; protected set; }
+        public bool Focusable => IsFocusable && (Style.Focusable ?? false);
+        public bool Focused
+        {
+            get => this == Context.Instance.Focused;
+            set
+            {
+                if (Style.Focusable.Value && value)
+                    Context.Instance.Focused = this;
+                else if (Focused)
+                    Context.Instance.Focused = null;
+            }
+        }
 
-		public virtual bool IsFocusable => false;
-		public bool Focusable => IsFocusable && (Style.Focusable ?? false);
-		public Rect BoundingBox { get; protected set; }
+        public readonly List<string> Classes = new List<string>();
+		public readonly Style        Style   = new Style();
 
-		public bool Focused {
-			get => this == Context.Instance.Focused;
-			set {
-				if(Style.Focusable.Value && value)
-					Context.Instance.Focused = this;
-				else if(Focused)
-					Context.Instance.Focused = null;
-			}
-		}
-		
-		public abstract void Render(RICanvas canvas);
-		public abstract Rect CalculateBoundingBox(Rect region);
+        public virtual bool IsFocusable => false;
 
-		public bool MouseOver;
+        public abstract void Render(RICanvas canvas);
+        public abstract Rect CalculateBoundingBox(Rect region);
+
+        public string     Id;
+        public BaseWidget Parent;
+        public bool       MouseOver;
+        public bool       MouseCurrentlyClicked;
+
+        bool StylesDirty = true;
 
 		public virtual bool MouseDown(MouseButton button, Point location) {
-			if(!BoundingBox.Contains(location)) return false;
+            if (!BoundingBox.Contains(location)) {
+                MouseCurrentlyClicked = false;
+                return false;
+            }
 			foreach(var child in this)
 				child.MouseDown(button, location);
-			return true;
+
+            MouseCurrentlyClicked = true;
+
+            return true;
 		}
 
 		public virtual void MouseUp(MouseButton button, Point location) {

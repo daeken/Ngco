@@ -1,27 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PrettyPrinter;
-using SkiaSharp;
 
 namespace Ngco {
-	public class Context {
+    public class Context {
 		public static Context Instance;
 		
-		public readonly IRenderer Renderer;
-		public BaseWidget Widget;
+		public readonly IRenderer   Renderer;
+        public readonly List<Style> Styles = new List<Style>();
 
-		public Point MouseLocation;
+        public Point       MouseLocation;
 		public MouseButton MouseButtons;
-		public Modifier Modifiers;
+		public Modifier    Modifiers;
 
-		public Style BaseStyle;
+        public BaseWidget Widget;
+        public BaseWidget Focused;
+        public Style      BaseStyle;
 
-		public BaseWidget Focused;
-		
-		public readonly List<Style> Styles = new List<Style>();
-
-		public Context(IRenderer renderer) {
+        public Context(IRenderer renderer) {
 			Instance = this;
 			Renderer = renderer;
 		}
@@ -29,7 +25,7 @@ namespace Ngco {
 		public void Render() {
 			Widget?.UpdateAll(x => x.UpdateStyles());
 			Renderer.Render(canvas => {
-				canvas.Clear();
+				canvas.Clear(Color.Win10Grey);
 				Widget?.CalculateBoundingBox(new Rect(0, 0, (int) Math.Ceiling(Renderer.Width / Renderer.Scale), (int) Math.Ceiling(Renderer.Height / Renderer.Scale)));
 				Widget?.Render(canvas);
 			});
@@ -53,9 +49,9 @@ namespace Ngco {
 		public bool HandleKeyDown(Key key) {
 			switch(key) {
 				case Key.Shift: Modifiers |= Modifier.Shift; break;
-				case Key.Alt: Modifiers |= Modifier.Alt; break;
-				case Key.Ctrl: Modifiers |= Modifier.Ctrl; break;
-				case Key.Win: Modifiers |= Modifier.Win; break;
+				case Key.Alt:   Modifiers |= Modifier.Alt; break;
+				case Key.Ctrl:  Modifiers |= Modifier.Ctrl; break;
+				case Key.Win:   Modifiers |= Modifier.Win; break;
 			}
 			if(Focused != null && CallAll(Focused, x => x.KeyDown(key))) return true;
 			return false;
@@ -64,9 +60,9 @@ namespace Ngco {
 		public bool HandleKeyUp(Key key) {
 			switch(key) {
 				case Key.Shift: Modifiers &= ~Modifier.Shift; break;
-				case Key.Alt: Modifiers &= ~Modifier.Alt; break;
-				case Key.Ctrl: Modifiers &= ~Modifier.Ctrl; break;
-				case Key.Win: Modifiers &= ~Modifier.Win; break;
+				case Key.Alt:   Modifiers &= ~Modifier.Alt; break;
+				case Key.Ctrl:  Modifiers &= ~Modifier.Ctrl; break;
+				case Key.Win:   Modifiers &= ~Modifier.Win; break;
 			}
 			if(Focused != null && CallAll(Focused, x => x.KeyUp(key))) return true;
 			if(key == Key.Tab) {

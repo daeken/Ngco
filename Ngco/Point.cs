@@ -14,12 +14,12 @@ namespace Ngco {
 			new Point(a.X - b.X, a.Y - b.Y);
 		
 		public static Point operator +(Point a, Size b) => new Point(
-			b.Width == -1 ? 1000000 : a.X + b.Width, 
+			b.Width  == -1 ? 1000000 : a.X + b.Width, 
 			b.Height == -1 ? 1000000 : a.Y + b.Height
 		);
 		
 		public static Point operator -(Point a, Size b) => new Point(
-			b.Width == -1 ? 1000000 : a.X - b.Width, 
+			b.Width  == -1 ? 1000000 : a.X - b.Width, 
 			b.Height == -1 ? 1000000 : a.Y - b.Height
 		);
 
