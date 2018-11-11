@@ -36,6 +36,11 @@ namespace TestApp {
 				new Button(new Label("Button B"))
 					.Click(_ => "B".Print()),
 				new HBox {
+					new Button(new Label("Foo")), 
+					new Button(new Label("Bar")), 
+					new Button(new Label("Baz"))
+				}, 
+				new HBox {
 					new Label("And even more").AddStyle(".testing"), 
 					new Label("Aaaaand more")
 				}
