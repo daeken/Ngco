@@ -52,8 +52,15 @@ namespace Ngco.Widgets {
 			canvas.Restore();
 		}
 
+		public override bool KeyDown(Key key) {
+			if(key != Key.Enter && key != Key.Space) return false;
+			MouseCurrentlyClicked = true;
+			return true;
+		}
+
 		public override bool KeyUp(Key key) {
 			if(key != Key.Enter && key != Key.Space) return false;
+			MouseCurrentlyClicked = false;
 			Click();
 			return true;
 		}

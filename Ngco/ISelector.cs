@@ -19,6 +19,8 @@ namespace Ngco {
 					Selectors.Add(new HoverSelector());
 				else if(sel == ":active")
 					Selectors.Add(new ActiveSelector());
+				else if(sel == ":focused")
+					Selectors.Add(new FocusedSelector());
 				else
 					Selectors.Add(new WidgetSelector { Class = sel });
 			}
@@ -63,5 +65,9 @@ namespace Ngco {
 
 	public class ActiveSelector : ISelector {
 		public BaseWidget Match(BaseWidget widget) => widget.MouseCurrentlyClicked ? widget : null;
+	}
+
+	public class FocusedSelector : ISelector {
+		public BaseWidget Match(BaseWidget widget) => widget.Focused ? widget : null;
 	}
 }

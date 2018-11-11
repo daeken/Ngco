@@ -13,7 +13,8 @@ namespace Ngco {
 		public bool Focused {
 			get => this == Context.Instance.Focused;
 			set {
-				if(Style.Focusable && value)
+				if(!Style.Focusable) return;
+				if(value)
 					Context.Instance.Focused = this;
 				else if(Focused)
 					Context.Instance.Focused = null;
@@ -48,7 +49,7 @@ namespace Ngco {
 			}
 		}
 
-		bool StylesDirty = true;
+		internal bool StylesDirty = true;
 
 		public virtual bool MouseDown(MouseButton button, Point location) {
 			if(button == MouseButton.Left && !BoundingBox.Contains(location)) {

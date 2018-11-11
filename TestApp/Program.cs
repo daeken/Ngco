@@ -42,6 +42,10 @@ namespace TestApp {
 				BackgroundColor = new Color(156, 213, 230)
 			});
 
+			Context.Add(new Style("button :focused") {
+				OutlineColor = Color.Teal
+			});
+
 			Context.Add(new Style("button .radius") {
 				CornerRadius = 10
 			});

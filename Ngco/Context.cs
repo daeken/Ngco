@@ -15,7 +15,16 @@ namespace Ngco {
 		public Modifier Modifiers;
 
 		public BaseWidget Widget;
-		public BaseWidget Focused;
+		BaseWidget _Focused;
+		public BaseWidget Focused {
+			get => _Focused;
+			set {
+				if(_Focused == value) return;
+				if(_Focused != null) _Focused.StylesDirty = true;
+				_Focused = value;
+				if(_Focused != null) _Focused.StylesDirty = true;
+			}
+		}
 		public Style BaseStyle;
 
 		public Context(IRenderer renderer) {
