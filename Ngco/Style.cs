@@ -75,8 +75,8 @@ namespace Ngco {
 			set => _Enabled = value;
 		}
 
-		float? _CornerRadius;
-		public float? CornerRadius {
+		int? _CornerRadius;
+		public int? CornerRadius {
 			get {
 				if(_CornerRadius != null) return _CornerRadius;
 				foreach(var style in Parents) {
@@ -84,7 +84,7 @@ namespace Ngco {
 					if(val != null) return val;
 				}
 
-				return Parents.Count != 0 ? 0.0f : Context.Instance.BaseStyle._CornerRadius;
+				return Parents.Count != 0 ? 0 : Context.Instance.BaseStyle._CornerRadius;
 			}
 			set => _CornerRadius = value;
 		}

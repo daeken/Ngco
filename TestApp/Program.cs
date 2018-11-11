@@ -24,8 +24,11 @@ namespace TestApp {
 			var buttonStyle = Context.Add(new Style("button") {
 				TextColor    = Color.Black,
 				TextSize     = 16,
-				Focusable    = true,
-				CornerRadius = 5.0f
+				Focusable    = true
+			});
+
+			var radiusStyle = Context.Add(new Style("button .radius") {
+				CornerRadius = 10
 			});
 
 			Title = "TestApp";
@@ -36,7 +39,7 @@ namespace TestApp {
 				new Button(new Label("Button A"))
 					.Click(_ => buttonStyle.TextSize += 5),
 				new Button(new Label("Button B"))
-					.Click(_ => "B".Print()),
+					.Click(_ => "B".Print()).AddStyle(".radius"),
 				new HBox {
 					new Button(new Label("Foo")),
 					new Button(new Label("Bar")),
