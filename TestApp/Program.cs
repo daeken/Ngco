@@ -1,4 +1,5 @@
-﻿using Ngco;
+﻿using System.Linq;
+using Ngco;
 using Ngco.Standalone;
 using Ngco.Widgets;
 using PrettyPrinter;
@@ -39,7 +40,7 @@ namespace TestApp {
 				new Button(new Label("Button A"))
 					.Click(_ => buttonStyle.TextSize += 5),
 				new Button(new Label("Button B"))
-					.Click(_ => "B".Print()).AddStyle(".radius"),
+					.Click(_ => "B".Print()).AddClass("radius"),
 				new HBox {
 					new Button(new Label("Foo")),
 					new Button(new Label("Bar")),
@@ -51,7 +52,7 @@ namespace TestApp {
 				}
 			};
 			
-			Context.Find("button").AddClass("testing");
+			Context.Find("hbox > button").Skip(1).Take(1).AddClass("testing");
 		}
 	}
 }
