@@ -1,9 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Ngco {
-	public class Context {
+	public class Context : IEnumerable<BaseWidget> {
 		public static Context Instance;
 
 		public readonly IRenderer Renderer;
@@ -163,5 +164,8 @@ namespace Ngco {
 			Styles.Add(style);
 			return style;
 		}
+
+		public IEnumerator<BaseWidget> GetEnumerator() => new List<BaseWidget> { Widget }.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }

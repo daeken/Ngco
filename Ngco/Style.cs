@@ -5,24 +5,10 @@ using System.Text.RegularExpressions;
 namespace Ngco {
 	public class Style {
 		public readonly List<Style> Parents = new List<Style>();
-		public readonly List<ISelector> Selectors = new List<ISelector>();
+		public readonly Selector Selector;
 
-		public Style(string selector = "") {
-			foreach(var match in Regex.Matches(selector, @"(\.[^.#> ]+|#[^.#> ]+|[^.#> ]+|>)")) {
-				var sel = match.ToString();
-				if(sel[0] == '#')
-					Selectors.Add(new IdSelector { Id = sel.Substring(1) });
-				else if(sel[0] == '.')
-					Selectors.Add(new ClassSelector { Class = sel.Substring(1) });
-				else if(sel == ">")
-					Selectors.Add(new DescendentSelector());
-				else
-					Selectors.Add(new WidgetSelector { Class = sel });
-			}
-		}
-
-		public bool Match(BaseWidget widget) =>
-			((IEnumerable<ISelector>) Selectors).Reverse().All(sel => (widget = sel.Match(widget)) != null);
+		public Style(string selector = "") =>
+			Selector = new Selector(selector);
 
 		Color _TextColor;
 		public Color TextColor {

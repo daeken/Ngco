@@ -43,10 +43,12 @@ namespace TestApp {
 					new Button(new Label("Baz"))
 				},
 				new HBox {
-					new Label("And even more").AddStyle(".testing"),
+					new Label("And even more").AddClass("testing"),
 					new Label("Aaaaand more")
 				}
 			};
+			
+			Context.Find("button").AddClass("testing");
 		}
 	}
 }

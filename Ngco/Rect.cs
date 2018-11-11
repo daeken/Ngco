@@ -64,8 +64,8 @@ namespace Ngco {
 		
 		public bool Contains(Point point) =>
 			TopLeft.X <= point.X && 
-		    TopLeft.Y <= point.Y &&
+			TopLeft.Y <= point.Y &&
 			point.X   <  TopLeft.X + Size.Width && 
-		    point.Y   <  TopLeft.Y + Size.Height;
+			point.Y   <  TopLeft.Y + Size.Height;
 	}
 }

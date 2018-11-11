@@ -76,14 +76,13 @@ namespace Ngco {
 			this.ForEach(x => x.UpdateAll(callback));
 		}
 
-		public void Add(string selector) {
-			Id = Regex.Match(selector, @"#([^#.]+)").Groups[1].Value;
-			Classes.AddRange(Regex.Matches(selector, @"\.([^#.]+)").Select(x => x.Groups[1].Value));
-			Id = Id.Length == 0 ? null : Id;
+		public BaseWidget SetId(string id) {
+			Id = id;
+			return this;
 		}
 
-		public BaseWidget AddStyle(string selector) {
-			Add(selector);
+		public BaseWidget AddClass(string name) {
+			Classes.AddRange(name.Split(' ').Where(x => x.Length != 0));
 			StylesDirty = true;
 			return this;
 		}
@@ -93,7 +92,7 @@ namespace Ngco {
 			StylesDirty = false;
 			Style.Parents.Clear();
 			foreach(var style in Context.Instance.Styles)
-				if(style.Match(this))
+				if(style.Selector.Match(this))
 					Style.Parents.Add(style);
 			var parent = Parent;
 			while(parent != null) {

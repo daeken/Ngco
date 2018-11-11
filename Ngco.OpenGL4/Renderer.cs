@@ -3,7 +3,7 @@ using SkiaSharp;
 using System;
 
 namespace Ngco.OpenGL4Renderer {
-    public class Renderer : IRenderer {
+	public class Renderer : IRenderer {
 		readonly GRContext Context;
 		GRBackendRenderTargetDesc RenderTarget;
 

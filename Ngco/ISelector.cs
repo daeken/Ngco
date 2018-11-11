@@ -1,4 +1,32 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
 namespace Ngco {
+	public class Selector {
+		public readonly List<ISelector> Selectors = new List<ISelector>();
+		
+		public Selector(string selector) {
+			foreach(var match in Regex.Matches(selector, @"(\.[^.#> ]+|#[^.#> ]+|[^.#> ]+|>)")) {
+				var sel = match.ToString();
+				if(sel[0] == '#')
+					Selectors.Add(new IdSelector { Id = sel.Substring(1) });
+				else if(sel[0] == '.')
+					Selectors.Add(new ClassSelector { Class = sel.Substring(1) });
+				else if(sel == ">")
+					Selectors.Add(new DescendentSelector());
+				else
+					Selectors.Add(new WidgetSelector { Class = sel });
+			}
+			Selectors.Reverse();
+		}
+		
+		public bool Match(BaseWidget widget) =>
+			Selectors.All(sel => (widget = sel.Match(widget)) != null);
+		
+		public static implicit operator Selector(string selector) => new Selector(selector);
+	}
+	
 	public interface ISelector {
 		BaseWidget Match(BaseWidget widget);
 	}
