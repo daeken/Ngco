@@ -14,7 +14,8 @@ namespace TestApp {
 				FontFamily = "Arial",
 				TextColor  = Color.White,
 				Focusable  = false,
-				Enabled    = true
+				Enabled    = true, 
+				CornerRadius = 0
 			};
 
 			Context.Add(new Style("hbox > .testing") {

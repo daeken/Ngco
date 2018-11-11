@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -10,83 +11,100 @@ namespace Ngco {
 		public Style(string selector = "") =>
 			Selector = new Selector(selector);
 
-		Color _TextColor;
+		Color textColor;
+		Color _TextColor {
+			get {
+				if(textColor != null) return textColor;
+				foreach(var style in Parents) {
+					var val = style._TextColor;
+					if(val != null) return val;
+				}
+				return null;
+			}
+		}
 		public Color TextColor {
-			get {
-				if(_TextColor != null) return _TextColor;
-				foreach(var style in Parents) {
-					var val = style.TextColor;
-					if(val != null) return val;
-				}
-				return Parents.Count != 0 ? null : Context.Instance.BaseStyle._TextColor;
-			}
-			set => _TextColor = value;
+			get => _TextColor ?? (Context.Instance.BaseStyle.textColor ?? throw new NoNullAllowedException());
+			set => textColor = value;
 		}
 		
-		int? _TextSize;
-		public int? TextSize {
+		int? textSize;
+		int? _TextSize {
 			get {
-				if(_TextSize != null) return _TextSize;
+				if(textSize != null) return textSize;
 				foreach(var style in Parents) {
-					var val = style.TextSize;
+					var val = style._TextSize;
 					if(val != null) return val;
 				}
-				return Parents.Count != 0 ? null : Context.Instance.BaseStyle._TextSize;
+				return null;
 			}
-			set => _TextSize = value;
+		}
+		public int TextSize {
+			get => _TextSize ?? (Context.Instance.BaseStyle.textSize ?? throw new NoNullAllowedException());
+			set => textSize = value;
 		}
 		
-		string _FontFamily;
-		public string FontFamily {
+		string fontFamily;
+		string _FontFamily {
 			get {
-				if(_FontFamily != null) return _FontFamily;
+				if(fontFamily != null) return fontFamily;
 				foreach(var style in Parents) {
 					var val = style.FontFamily;
 					if(val != null) return val;
 				}
-				return Parents.Count != 0 ? null : Context.Instance.BaseStyle._FontFamily;
+				return null;
 			}
-			set => _FontFamily = value;
+		}
+		public string FontFamily {
+			get => _FontFamily ?? (Context.Instance.BaseStyle.fontFamily ?? throw new NoNullAllowedException());
+			set => fontFamily = value;
 		}
 		
-		bool? _Focusable;
-		public bool? Focusable {
+		bool? focusable;
+		bool? _Focusable {
 			get {
-				if(_Focusable != null) return _Focusable;
+				if(focusable != null) return focusable;
 				foreach(var style in Parents) {
-					var val = style.Focusable;
+					var val = style._Focusable;
 					if(val != null) return val;
 				}
-				return Parents.Count != 0 ? null : Context.Instance.BaseStyle._Focusable;
+				return null;
 			}
-			set => _Focusable = value;
+		}
+		public bool Focusable {
+			get => _Focusable ?? (Context.Instance.BaseStyle.focusable ?? throw new NoNullAllowedException());
+			set => focusable = value;
 		}
 		
-		bool? _Enabled;
-		public bool? Enabled {
+		bool? enabled;
+		bool? _Enabled {
 			get {
-				if(_Enabled != null) return _Enabled;
+				if(enabled != null) return enabled;
 				foreach(var style in Parents) {
-					var val = style.Enabled;
+					var val = style._Enabled;
 					if(val != null) return val;
 				}
-				return Parents.Count != 0 ? null : Context.Instance.BaseStyle._Enabled;
+				return null;
 			}
-			set => _Enabled = value;
+		}
+		public bool Enabled {
+			get => _Enabled ?? (Context.Instance.BaseStyle.enabled ?? throw new NoNullAllowedException());
+			set => enabled = value;
 		}
 
-		int? _CornerRadius;
-		public int? CornerRadius {
+		int? cornerRadius;
+		int? _CornerRadius {
 			get {
-				if(_CornerRadius != null) return _CornerRadius;
+				if(cornerRadius != null) return cornerRadius;
 				foreach(var style in Parents) {
-					var val = style.CornerRadius;
+					var val = style._CornerRadius;
 					if(val != null) return val;
 				}
-
-				return Parents.Count != 0 ? 0 : Context.Instance.BaseStyle._CornerRadius;
+				return null;
 			}
-			set => _CornerRadius = value;
+		}
+		public int CornerRadius {
+			get => _CornerRadius ?? (Context.Instance.BaseStyle.cornerRadius ?? throw new NoNullAllowedException());
+			set => cornerRadius = value;
 		}
 	}
 }

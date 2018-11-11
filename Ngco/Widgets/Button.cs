@@ -34,7 +34,7 @@ namespace Ngco.Widgets {
 
 			var position = new Point(BoundingBox.TopLeft.X, BoundingBox.TopLeft.Y);
 			var size     = new Point(BoundingBox.Size.Width, BoundingBox.Size.Height);
-			var round    = new Point(Style.CornerRadius.Value, Style.CornerRadius.Value);
+			var round    = new Point(Style.CornerRadius, Style.CornerRadius);
 
 			canvas.DrawRect(
 				position, size,
@@ -82,13 +82,15 @@ namespace Ngco.Widgets {
 
 		public override void MouseUp(MouseButton button, Point location) {
 			if(BoundingBox.Contains(location) && button == MouseButton.Left)
-				Clicked?.Invoke(this);
+				Click();
 
 			MouseCurrentlyClicked = false;
 		}
 
-		public void Click() =>
+		public void Click() {
+			Focused = true;
 			Clicked?.Invoke(this);
+		}
 
 		public Button Click(Action<Button> callback) {
 			Clicked += callback;

@@ -8,12 +8,12 @@ using System.Text.RegularExpressions;
 namespace Ngco {
 	public abstract class BaseWidget : IEnumerable<BaseWidget> {
 		public Rect BoundingBox { get; protected set; }
-		public bool Focusable => IsFocusable && (Style.Focusable ?? false);
+		public bool Focusable => IsFocusable && Style.Focusable;
 
 		public bool Focused {
 			get => this == Context.Instance.Focused;
 			set {
-				if(Style.Focusable.Value && value)
+				if(Style.Focusable && value)
 					Context.Instance.Focused = this;
 				else if(Focused)
 					Context.Instance.Focused = null;

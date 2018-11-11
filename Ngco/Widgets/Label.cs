@@ -7,8 +7,8 @@ namespace Ngco.Widgets {
 		
 		SKPaint Paint => new SKPaint {
 			Color = Style.TextColor,
-            IsAntialias = true,
-            TextSize = Style.TextSize.Value, 
+			IsAntialias = true,
+			TextSize = Style.TextSize, 
 			Typeface = SKTypeface.FromFamilyName(Style.FontFamily ?? "Arial")
 		};
 
@@ -16,7 +16,7 @@ namespace Ngco.Widgets {
 			Text = text;
 
 		public override Rect CalculateBoundingBox(Rect region) {
-			var bb = new Rect(region.TopLeft, new Size((int) Math.Ceiling(Paint.MeasureText(Text)), Style.TextSize.Value));
+			var bb = new Rect(region.TopLeft, new Size((int) Math.Ceiling(Paint.MeasureText(Text)), Style.TextSize));
 			return BoundingBox = bb.ClipTo(region);
 		}
 
@@ -24,7 +24,7 @@ namespace Ngco.Widgets {
 			var paint = Paint;
 			canvas.Save();
 			canvas.ClipRect(BoundingBox.Inset(BoundingBox.Size * -0.1f));
-			canvas.DrawText(Text, BoundingBox.TopLeft.X, BoundingBox.TopLeft.Y - (paint.FontSpacing - Style.TextSize.Value) + Style.TextSize.Value, paint);
+			canvas.DrawText(Text, BoundingBox.TopLeft.X, BoundingBox.TopLeft.Y - (paint.FontSpacing - Style.TextSize) + Style.TextSize, paint);
 			canvas.Restore();
 		}
 	}
