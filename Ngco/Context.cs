@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PrettyPrinter;
 using SkiaSharp;
 
@@ -12,6 +13,7 @@ namespace Ngco {
 
 		public Point MouseLocation;
 		public MouseButton MouseButtons;
+		public Modifier Modifiers;
 
 		public Style BaseStyle;
 
@@ -48,14 +50,30 @@ namespace Ngco {
 			return handled;
 		}
 
-		public bool HandleKeyDown(Key key) => Focused != null && CallAll(Focused, x => x.KeyDown(key));
+		public bool HandleKeyDown(Key key) {
+			switch(key) {
+				case Key.Shift: Modifiers |= Modifier.Shift; break;
+				case Key.Alt: Modifiers |= Modifier.Alt; break;
+				case Key.Ctrl: Modifiers |= Modifier.Ctrl; break;
+				case Key.Win: Modifiers |= Modifier.Win; break;
+			}
+			if(Focused != null && CallAll(Focused, x => x.KeyDown(key))) return true;
+			return false;
+		}
+
 		public bool HandleKeyUp(Key key) {
+			switch(key) {
+				case Key.Shift: Modifiers &= ~Modifier.Shift; break;
+				case Key.Alt: Modifiers &= ~Modifier.Alt; break;
+				case Key.Ctrl: Modifiers &= ~Modifier.Ctrl; break;
+				case Key.Win: Modifiers &= ~Modifier.Win; break;
+			}
 			if(Focused != null && CallAll(Focused, x => x.KeyUp(key))) return true;
 			if(key == Key.Tab) {
-				var next = FindNextFocusable(Focused ?? Widget);
+				var next = FindNextFocusable(Focused ?? Widget, !Modifiers.HasFlag(Modifier.Shift));
 				if(next == null) {
 					if(Focused != null)
-						next = FindNextFocusable(Widget);
+						next = FindNextFocusable(Widget, !Modifiers.HasFlag(Modifier.Shift));
 					if(next == null)
 						return false;
 				}
@@ -69,33 +87,38 @@ namespace Ngco {
 			return false;
 		}
 
-		BaseWidget FindNextFocusable(BaseWidget cur) {
+		BaseWidget FindNextFocusable(BaseWidget cur, bool forward) {
 			BaseWidget FindBelow(BaseWidget widget) {
-				if(cur != widget && widget.Focusable)
-					return widget;
-				foreach(var elem in widget) {
+				if(cur != widget && widget.Focusable) return widget;
+				return (forward ? widget : widget.Reverse()).Select(FindBelow).FirstOrDefault(bn => bn != null);
+			}
+			BaseWidget FindAbove(BaseWidget widget) {
+				if(!forward && cur != widget && widget.Focusable) return widget;
+				if(widget.Parent == null) return null;
+				var found = false;
+				var elems = new List<BaseWidget>();
+				foreach(var elem in forward ? widget.Parent : widget.Parent.Reverse()) {
+					if(elem == widget)
+						found = true;
+					else if(found)
+						elems.Add(elem);
+				}
+				foreach(var elem in elems) {
 					var bn = FindBelow(elem);
 					if(bn != null) return bn;
 				}
-				return null;
-			}
-			BaseWidget FindAbove(BaseWidget widget) {
-				if(widget.Parent == null) return null;
-				var found = false;
-				foreach(var elem in widget.Parent) {
-					if(elem == widget)
-						found = true;
-					else if(found) {
-						var bn = FindBelow(elem);
-						if(bn != null) return bn;
-					}
-				}
-				return null;
+				return FindAbove(widget.Parent);
 			}
 
-			var next = FindBelow(cur);
-			if(next != null) return next;
-			return FindAbove(cur);
+			if(forward) {
+				var next = FindBelow(cur);
+				if(next != null) return next;
+				return FindAbove(cur);
+			} else {
+				var next = FindAbove(cur);
+				if(next != null) return next;
+				return FindBelow(cur);
+			}
 		}
 
 		public bool HandleKeyPress(char key)  => Focused != null && CallAll(Focused, x => x.KeyPress(key));

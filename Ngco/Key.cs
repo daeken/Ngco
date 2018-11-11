@@ -19,7 +19,7 @@ namespace Ngco {
 	}
 
 	[Flags]
-	public enum Modifiers {
+	public enum Modifier {
 		Ctrl = 1, 
 		Alt = 2, 
 		Win = 4, 
