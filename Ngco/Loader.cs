@@ -129,6 +129,9 @@ namespace Ngco {
 					case "multiline":
 						style.Multiline = ParseBool(value);
 						break;
+                    case "layout":
+                        style.Layout = ParseLayout(value);
+                        break;
 					case string x: throw new NotSupportedException($"Unknown style property {x}");
 				}
 			}
@@ -166,5 +169,74 @@ namespace Ngco {
 					return false;
 			}
 		}
+
+        Layout ParseLayout(string value) {
+            using (var input = new StringReader(value)) {
+                var yaml = new YamlStream();
+                yaml.Load(input);
+                // Examine the stream
+                var mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
+                Layout layout = new Layout();
+                Alignment alignment;
+
+                foreach (var (nodekey, nodeVal) in mapping) {
+                    var body = ((YamlMappingNode)nodekey).Children;
+                    string key = body.Keys.ElementAt(0).ToString();
+                    value = body.Keys.ElementAt(1).ToString();
+                    switch (key.ToString()) {
+                        case "width":
+                            layout.Width = int.Parse(value);
+                            break;
+                        case "height":
+                            layout.Height = int.Parse(value);
+                            break;
+                        case "spacing":
+                            layout.Spacing = int.Parse(value);
+                            break;
+                        case "vertical-alignment":
+                            value = value.First().ToString().ToUpper() + value.Substring(1);
+                            alignment = layout.Alignment;
+                            alignment.VerticalAlignment = Enum.Parse<VerticalAlignment>(value);
+                            layout.Alignment = alignment;
+                            break;
+                        case "horizontal-alignment":
+                            value = value.First().ToString().ToUpper() + value.Substring(1);
+                            alignment = layout.Alignment;
+                            alignment.HorizontalAlignment = Enum.Parse<HorizontalAlignment>(value);
+                            layout.Alignment = alignment;
+                            break;
+                        case "margin":
+                            if (int.TryParse(value, out int margin))
+                                layout.Margin = new Margin(margin);
+                            else {
+                                string[] margins = value.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                                layout.Margin = new Margin() {
+                                    Up = int.Parse(margins[0]),
+                                    Right = int.Parse(margins[1]),
+                                    Down = int.Parse(margins[2]),
+                                    Left = int.Parse(margins[3]),
+                                };
+                            }
+                            break;
+                        case "padding":
+                            if (int.TryParse(value, out int padding)) {
+                                layout.Padding = new Padding(padding);
+                            }
+                            else {
+                                string[] paddings = value.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                                layout.Padding = new Padding() {
+                                    Up = int.Parse(paddings[0]),
+                                    Right = int.Parse(paddings[1]),
+                                    Down = int.Parse(paddings[2]),
+                                    Left = int.Parse(paddings[3]),
+                                };
+                            }
+                            break;
+                    }
+                }
+
+                return layout;
+            }
+        }
 	}
 }

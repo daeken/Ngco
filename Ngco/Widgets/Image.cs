@@ -27,11 +27,6 @@ namespace Ngco.Widgets {
 					ImageLoaded = SKBitmap.Decode(stream);
 		}
 
-		public override Rect CalculateBoundingBox(Rect region) {
-			var bb = _Path != "" && File.Exists(_Path) ? new Rect(region.TopLeft, new Size(ImageLoaded.Width, ImageLoaded.Height)) : new Rect();
-			return BoundingBox = bb.ClipTo(region);
-		}
-
 		public override void Render(RICanvas canvas) {
 			if (_Path != "" && File.Exists(_Path)) {
 				canvas.Save();
@@ -40,5 +35,13 @@ namespace Ngco.Widgets {
 				canvas.Restore();
 			}
 		}
-	}
+
+        public override void Measure(Size region)
+        {
+            BoundingBox = _Path != "" && File.Exists(_Path) ? new Rect(new Point(), new Size(ImageLoaded.Width, ImageLoaded.Height)) : new Rect();
+            ApplyLayoutSize();
+        }
+
+        public override void Layout(Rect region) { }
+    }
 }

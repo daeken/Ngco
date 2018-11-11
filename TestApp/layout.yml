@@ -10,6 +10,14 @@ styles:
       enabled: true
       multiline: false
       corner-radius: 0
+      layout: 
+        width: 0
+        height: 0
+        vertical-alignment: stretch
+        horizontal-alignment: stretch
+        margin: 5
+        padding: 5
+        spacing: 5
   - hbox > .testing:
       text-color: green
       text-size: 75
