@@ -53,9 +53,17 @@ namespace Ngco {
 			if(Focused != null && CallAll(Focused, x => x.KeyUp(key))) return true;
 			if(key == Key.Tab) {
 				var next = FindNextFocusable(Focused ?? Widget);
-				if(next == null) return false;
-				next.Focused = true;
-				next.Print();
+				if(next == null) {
+					if(Focused != null)
+						next = FindNextFocusable(Widget);
+					if(next == null)
+						return false;
+				}
+
+				if(next == Focused)
+					Focused = null;
+				else
+					next.Focused = true;
 				return true;
 			}
 			return false;
@@ -72,6 +80,16 @@ namespace Ngco {
 				return null;
 			}
 			BaseWidget FindAbove(BaseWidget widget) {
+				if(widget.Parent == null) return null;
+				var found = false;
+				foreach(var elem in widget.Parent) {
+					if(elem == widget)
+						found = true;
+					else if(found) {
+						var bn = FindBelow(elem);
+						if(bn != null) return bn;
+					}
+				}
 				return null;
 			}
 
