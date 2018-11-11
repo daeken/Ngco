@@ -5,7 +5,7 @@ using OpenTK.Input;
 using System;
 
 namespace Ngco.Standalone {
-    public class AppWindow : GameWindow {
+	public class AppWindow : GameWindow {
 		public readonly new Context Context;
 
 		public AppWindow() : base(

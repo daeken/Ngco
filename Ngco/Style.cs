@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Ngco {
-    public class Style {
+	public class Style {
 		public readonly List<Style> Parents = new List<Style>();
 		public readonly List<ISelector> Selectors = new List<ISelector>();
 
@@ -89,20 +89,18 @@ namespace Ngco {
 			set => _Enabled = value;
 		}
 
-        float? _CornerRadius;
-        public float? CornerRadius
-        {
-            get
-            {
-                if (_CornerRadius != null) return _CornerRadius;
-                foreach (var style in Parents)
-                {
-                    var val = style.CornerRadius;
-                    if (val != null) return val;
-                }
-                return Parents.Count != 0 ? 0.0f : Context.Instance.BaseStyle._CornerRadius;
-            }
-            set => _CornerRadius = value;
-        }
-    }
+		float? _CornerRadius;
+		public float? CornerRadius {
+			get {
+				if(_CornerRadius != null) return _CornerRadius;
+				foreach(var style in Parents) {
+					var val = style.CornerRadius;
+					if(val != null) return val;
+				}
+
+				return Parents.Count != 0 ? 0.0f : Context.Instance.BaseStyle._CornerRadius;
+			}
+			set => _CornerRadius = value;
+		}
+	}
 }

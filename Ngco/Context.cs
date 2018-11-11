@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Ngco {
-    public class Context {
+	public class Context {
 		public static Context Instance;
-		
-		public readonly IRenderer   Renderer;
-        public readonly List<Style> Styles = new List<Style>();
 
-        public Point       MouseLocation;
+		public readonly IRenderer Renderer;
+		public readonly List<Style> Styles = new List<Style>();
+
+		public Point MouseLocation;
 		public MouseButton MouseButtons;
-		public Modifier    Modifiers;
+		public Modifier Modifiers;
 
-        public BaseWidget Widget;
-        public BaseWidget Focused;
-        public Style      BaseStyle;
+		public BaseWidget Widget;
+		public BaseWidget Focused;
+		public Style BaseStyle;
 
-        public Context(IRenderer renderer) {
+		public Context(IRenderer renderer) {
 			Instance = this;
 			Renderer = renderer;
 		}
@@ -26,7 +26,8 @@ namespace Ngco {
 			Widget?.UpdateAll(x => x.UpdateStyles());
 			Renderer.Render(canvas => {
 				canvas.Clear(Color.Win10Grey);
-				Widget?.CalculateBoundingBox(new Rect(0, 0, (int) Math.Ceiling(Renderer.Width / Renderer.Scale), (int) Math.Ceiling(Renderer.Height / Renderer.Scale)));
+				Widget?.CalculateBoundingBox(new Rect(0, 0, (int) Math.Ceiling(Renderer.Width / Renderer.Scale),
+					(int) Math.Ceiling(Renderer.Height / Renderer.Scale)));
 				Widget?.Render(canvas);
 			});
 		}
@@ -37,6 +38,7 @@ namespace Ngco {
 				clist.Add(inner);
 				inner = inner.Parent;
 			}
+
 			clist.Reverse();
 
 			var handled = false;
@@ -48,22 +50,40 @@ namespace Ngco {
 
 		public bool HandleKeyDown(Key key) {
 			switch(key) {
-				case Key.Shift: Modifiers |= Modifier.Shift; break;
-				case Key.Alt:   Modifiers |= Modifier.Alt; break;
-				case Key.Ctrl:  Modifiers |= Modifier.Ctrl; break;
-				case Key.Win:   Modifiers |= Modifier.Win; break;
+				case Key.Shift:
+					Modifiers |= Modifier.Shift;
+					break;
+				case Key.Alt:
+					Modifiers |= Modifier.Alt;
+					break;
+				case Key.Ctrl:
+					Modifiers |= Modifier.Ctrl;
+					break;
+				case Key.Win:
+					Modifiers |= Modifier.Win;
+					break;
 			}
+
 			if(Focused != null && CallAll(Focused, x => x.KeyDown(key))) return true;
 			return false;
 		}
 
 		public bool HandleKeyUp(Key key) {
 			switch(key) {
-				case Key.Shift: Modifiers &= ~Modifier.Shift; break;
-				case Key.Alt:   Modifiers &= ~Modifier.Alt; break;
-				case Key.Ctrl:  Modifiers &= ~Modifier.Ctrl; break;
-				case Key.Win:   Modifiers &= ~Modifier.Win; break;
+				case Key.Shift:
+					Modifiers &= ~Modifier.Shift;
+					break;
+				case Key.Alt:
+					Modifiers &= ~Modifier.Alt;
+					break;
+				case Key.Ctrl:
+					Modifiers &= ~Modifier.Ctrl;
+					break;
+				case Key.Win:
+					Modifiers &= ~Modifier.Win;
+					break;
 			}
+
 			if(Focused != null && CallAll(Focused, x => x.KeyUp(key))) return true;
 			if(key == Key.Tab) {
 				var next = FindNextFocusable(Focused ?? Widget, !Modifiers.HasFlag(Modifier.Shift));
@@ -80,6 +100,7 @@ namespace Ngco {
 					next.Focused = true;
 				return true;
 			}
+
 			return false;
 		}
 
@@ -88,6 +109,7 @@ namespace Ngco {
 				if(cur != widget && widget.Focusable) return widget;
 				return (forward ? widget : widget.Reverse()).Select(FindBelow).FirstOrDefault(bn => bn != null);
 			}
+
 			BaseWidget FindAbove(BaseWidget widget) {
 				if(!forward && cur != widget && widget.Focusable) return widget;
 				if(widget.Parent == null) return null;
@@ -99,10 +121,12 @@ namespace Ngco {
 					else if(found)
 						elems.Add(elem);
 				}
+
 				foreach(var elem in elems) {
 					var bn = FindBelow(elem);
 					if(bn != null) return bn;
 				}
+
 				return FindAbove(widget.Parent);
 			}
 
@@ -117,14 +141,14 @@ namespace Ngco {
 			}
 		}
 
-		public bool HandleKeyPress(char key)  => Focused != null && CallAll(Focused, x => x.KeyPress(key));
+		public bool HandleKeyPress(char key) => Focused != null && CallAll(Focused, x => x.KeyPress(key));
 
 		public bool MouseDown(MouseButton button) {
 			if(!(Widget?.MouseDown(button, MouseLocation) ?? false)) return false;
 			MouseButtons |= button;
 			return true;
 		}
-		
+
 		public void MouseUp(MouseButton button) {
 			MouseButtons &= ~button;
 			Widget?.MouseUp(button, MouseLocation);

@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 
 namespace Ngco.Widgets {
-    public class Button : BaseWidget {
+	public class Button : BaseWidget {
 		BaseWidget _Label;
+
 		public BaseWidget Label {
 			get => _Label;
 			set => (_Label = value).Parent = this;
 		}
+
 		public event Action<Button> Clicked;
 
 		public override bool IsFocusable => true;
@@ -18,10 +20,10 @@ namespace Ngco.Widgets {
 
 		public override IEnumerator<BaseWidget> GetEnumerator() =>
 			new List<BaseWidget> { Label }.GetEnumerator();
-		
+
 		public override Rect CalculateBoundingBox(Rect region) {
 			var labelBb = Label.CalculateBoundingBox(region.Inset(new Size(10, 10)));
-			var bb      = new Rect(region.TopLeft, labelBb.Size + new Size(20, 20));
+			var bb = new Rect(region.TopLeft, labelBb.Size + new Size(20, 20));
 
 			return BoundingBox = bb.ClipTo(region);
 		}
@@ -30,44 +32,44 @@ namespace Ngco.Widgets {
 			canvas.Save();
 			canvas.ClipRect(BoundingBox);
 
-            float left    = BoundingBox.TopLeft.X;
-            float right   = BoundingBox.TopLeft.Y;
-            float width   = BoundingBox.Size.Width;
-            float height  = BoundingBox.Size.Height;
-            float radiusX = Style.CornerRadius.Value;
-            float radiusY = Style.CornerRadius.Value;
+			var left = BoundingBox.TopLeft.X;
+			var right = BoundingBox.TopLeft.Y;
+			var width = BoundingBox.Size.Width;
+			var height = BoundingBox.Size.Height;
+			var radiusX = Style.CornerRadius.Value;
+			var radiusY = Style.CornerRadius.Value;
 
-            canvas.DrawRoundRect(
-                left, right, width, height, radiusX, radiusY,
-                new SKPaint { Color = Color.Win10Grey, IsAntialias = true }
-            );
+			canvas.DrawRoundRect(
+				left, right, width, height, radiusX, radiusY,
+				new SKPaint { Color = Color.Win10Grey, IsAntialias = true }
+			);
 
-            canvas.DrawRoundRect(
-                left, right, width, height, radiusX, radiusY,
-                new SKPaint { Color = Color.Win10GreyDark, IsAntialias = true, IsStroke = true, StrokeWidth = 1 }
-            );
+			canvas.DrawRoundRect(
+				left, right, width, height, radiusX, radiusY,
+				new SKPaint { Color = Color.Win10GreyDark, IsAntialias = true, IsStroke = true, StrokeWidth = 1 }
+			);
 
-            if(MouseOver || Focused) {
-                canvas.DrawRoundRect(
-                    left, right, width, height, radiusX, radiusY,
-                    new SKPaint { Color = Color.Win10Blue, IsAntialias = true, IsStroke = true, StrokeWidth = 1 }
-                );
+			if(MouseOver || Focused) {
+				canvas.DrawRoundRect(
+					left, right, width, height, radiusX, radiusY,
+					new SKPaint { Color = Color.Win10Blue, IsAntialias = true, IsStroke = true, StrokeWidth = 1 }
+				);
 
-                canvas.DrawRoundRect(
-                    left, right, width, height, radiusX, radiusY,
-                    new SKPaint { Color = Color.Win10BlueOver, IsAntialias = true }
-                );
+				canvas.DrawRoundRect(
+					left, right, width, height, radiusX, radiusY,
+					new SKPaint { Color = Color.Win10BlueOver, IsAntialias = true }
+				);
 
-                if(MouseCurrentlyClicked) {
-                    canvas.DrawRoundRect(
-                        left, right, width, height, radiusX, radiusY,
-                        new SKPaint { Color = Color.Win10BlueOverDark, IsAntialias = true }
-                    );
-                }
-            }
+				if(MouseCurrentlyClicked) {
+					canvas.DrawRoundRect(
+						left, right, width, height, radiusX, radiusY,
+						new SKPaint { Color = Color.Win10BlueOverDark, IsAntialias = true }
+					);
+				}
+			}
 
-            Label.Render(canvas);
-            canvas.Restore();
+			Label.Render(canvas);
+			canvas.Restore();
 		}
 
 		public override bool KeyUp(Key key) {
@@ -80,8 +82,8 @@ namespace Ngco.Widgets {
 			if(BoundingBox.Contains(location) && button == MouseButton.Left)
 				Clicked?.Invoke(this);
 
-            MouseCurrentlyClicked = false;
-        }
+			MouseCurrentlyClicked = false;
+		}
 
 		public void Click() =>
 			Clicked?.Invoke(this);

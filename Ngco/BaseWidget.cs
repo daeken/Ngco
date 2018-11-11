@@ -6,48 +6,47 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Ngco {
-    public abstract class BaseWidget : IEnumerable<BaseWidget> {
+	public abstract class BaseWidget : IEnumerable<BaseWidget> {
+		public Rect BoundingBox { get; protected set; }
+		public bool Focusable => IsFocusable && (Style.Focusable ?? false);
 
-        public Rect BoundingBox { get; protected set; }
-        public bool Focusable => IsFocusable && (Style.Focusable ?? false);
-        public bool Focused
-        {
-            get => this == Context.Instance.Focused;
-            set
-            {
-                if (Style.Focusable.Value && value)
-                    Context.Instance.Focused = this;
-                else if (Focused)
-                    Context.Instance.Focused = null;
-            }
-        }
+		public bool Focused {
+			get => this == Context.Instance.Focused;
+			set {
+				if(Style.Focusable.Value && value)
+					Context.Instance.Focused = this;
+				else if(Focused)
+					Context.Instance.Focused = null;
+			}
+		}
 
-        public readonly List<string> Classes = new List<string>();
-		public readonly Style        Style   = new Style();
+		public readonly List<string> Classes = new List<string>();
+		public readonly Style Style = new Style();
 
-        public virtual bool IsFocusable => false;
+		public virtual bool IsFocusable => false;
 
-        public abstract void Render(RICanvas canvas);
-        public abstract Rect CalculateBoundingBox(Rect region);
+		public abstract void Render(RICanvas canvas);
+		public abstract Rect CalculateBoundingBox(Rect region);
 
-        public string     Id;
-        public BaseWidget Parent;
-        public bool       MouseOver;
-        public bool       MouseCurrentlyClicked;
+		public string Id;
+		public BaseWidget Parent;
+		public bool MouseOver;
+		public bool MouseCurrentlyClicked;
 
-        bool StylesDirty = true;
+		bool StylesDirty = true;
 
 		public virtual bool MouseDown(MouseButton button, Point location) {
-            if (!BoundingBox.Contains(location)) {
-                MouseCurrentlyClicked = false;
-                return false;
-            }
+			if(!BoundingBox.Contains(location)) {
+				MouseCurrentlyClicked = false;
+				return false;
+			}
+
 			foreach(var child in this)
 				child.MouseDown(button, location);
 
-            MouseCurrentlyClicked = true;
+			MouseCurrentlyClicked = true;
 
-            return true;
+			return true;
 		}
 
 		public virtual void MouseUp(MouseButton button, Point location) {
@@ -55,11 +54,13 @@ namespace Ngco {
 				foreach(var child in this)
 					child.MouseUp(button, location);
 		}
+
 		public virtual bool MouseMove(MouseButton buttons, Point location) {
 			if(!BoundingBox.Contains(location)) {
 				UpdateAll(x => x.MouseOver = false);
 				return false;
 			}
+
 			MouseOver = true;
 			foreach(var child in this)
 				child.MouseMove(buttons, location);
