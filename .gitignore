@@ -26,6 +26,8 @@ build/
 [Bb]in/
 [Oo]bj/
 
+*/[Oobg]/
+
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
 
