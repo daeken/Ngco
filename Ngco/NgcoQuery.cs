@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MoreLinq;
+using Ngco.Widgets;
 
 namespace Ngco {
 	public static class NgcoQuery {
@@ -23,5 +24,11 @@ namespace Ngco {
 
 		public static IEnumerable<BaseWidget> AddClass(this IEnumerable<BaseWidget> set, string name) =>
 			DoPersist(set, widget => widget.AddClass(name));
+		
+		public static IEnumerable<BaseWidget> Click(this IEnumerable<BaseWidget> set, Action<Button> callback) =>
+			DoPersist(set, widget => {
+				if(widget is Button button)
+					button.Click(callback);
+			});
 	}
 }

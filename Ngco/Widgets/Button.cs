@@ -8,7 +8,10 @@ namespace Ngco.Widgets {
 
 		public BaseWidget Label {
 			get => _Label;
-			set => (_Label = value).Parent = this;
+			set {
+				_Label = value;
+				if(value != null) value.Parent = this;
+			}
 		}
 
 		public event Action<Button> Clicked;

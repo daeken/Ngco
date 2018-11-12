@@ -1,0 +1,58 @@
+---
+styles:
+  - $base:
+      background-color: transparent
+      outline-color: purple
+      text-color: white
+      text-size: 30
+      font-family: Arial
+      focusable: false
+      enabled: true
+      corner-radius: 0
+  - hbox > .testing:
+      text-color: green
+      text-size: 75
+  - button:
+      focusable: true
+      background-color: rgb(225, 225, 225)
+  - "button :hover":
+      background-color: rgb(180, 213, 230)
+  - "button :active":
+      background-color: rgb(156, 213, 230)
+  - "button :focused":
+      outline-color: teal
+  - button.radius:
+      corner-radius: 10
+
+widgets:
+  - vbox:
+    - label:
+      - Testing Labels!
+    - label:
+      - Some more testing
+    - button:
+      - id: button-a
+      - class: testing foo
+      - label:
+        - Button A
+    - button:
+        - id: button-b
+        - class: radius
+        - label:
+            - Button B
+    - hbox:
+        - button:
+            - label:
+                - Foo
+        - button:
+            - label:
+                - Bar
+        - button:
+            - label:
+                - Baz
+    - hbox:
+        - label:
+            - And even more
+            - class: testing
+        - label:
+            - Aaaaand more
