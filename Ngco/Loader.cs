@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Ngco.Widgets;
-using PrettyPrinter;
 using YamlDotNet.RepresentationModel;
 
 namespace Ngco {
@@ -46,17 +45,27 @@ namespace Ngco {
 			switch(cls) {
 				case "button": widget = new Button(); break;
 				case "hbox": widget = new HBox(); break;
+				case "image": widget = new Image(); break;
 				case "label": widget = new Label(); break;
+				case "textbox": widget = new TextBox(); break;
 				case "vbox": widget = new VBox(); break;
 				default: throw new NotSupportedException($"Unknown widget class: {cls}");
 			}
 
 			foreach(var sub in (YamlSequenceNode) body) {
-				if(sub is YamlScalarNode scalar) {
-					Debug.Assert(cls == "label");
-					((Label) widget).Text = scalar.Value;
-					continue;
+				if (sub is YamlScalarNode scalar) {
+					if (cls == "label") {
+						((Label)widget).Text = scalar.Value;
+						continue;
+					}
+
+					if (cls == "image") {
+						Debug.Assert(cls == "image");
+						((Image)widget).Path = scalar.Value;
+						continue;
+					}
 				}
+
 				var (keyNode, valueNode) = ((YamlMappingNode) sub).Children.First();
 				var key = keyNode.ToString().ToLower();
 				
@@ -64,6 +73,8 @@ namespace Ngco {
 					var child = ParseNode((YamlMappingNode) sub);
 					if(cls == "button")
 						((Button) widget).Label = child;
+					else if (cls == "textbox")
+						((TextBox)widget).Label = child;
 					else
 						((BaseContainer) widget).Add(child);
 				} else {

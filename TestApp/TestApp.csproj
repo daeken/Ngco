@@ -6,8 +6,22 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="layout.yml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="layout.yml" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Ngco.Standalone\Ngco.Standalone.csproj" />
       <ProjectReference Include="..\Ngco\Ngco.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="cat.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

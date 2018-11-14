@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using SkiaSharp;
 
 namespace Ngco.Widgets {
@@ -16,7 +17,8 @@ namespace Ngco.Widgets {
 			Text = text;
 
 		public override Rect CalculateBoundingBox(Rect region) {
-			var bb = new Rect(region.TopLeft, new Size((int) Math.Ceiling(Paint.MeasureText(Text)), Style.TextSize));
+			var lines = Text.Split("\\n");
+			var bb = new Rect(region.TopLeft, new Size((int) Math.Ceiling(Paint.MeasureText(lines.OrderByDescending(s => s.Length).First())), Style.TextSize * lines.Length));
 			return BoundingBox = bb.ClipTo(region);
 		}
 

@@ -12,6 +12,11 @@ styles:
   - hbox > .testing:
       text-color: green
       text-size: 75
+  - label .header:
+      text-color: black
+      text-size: 75
+  - label .desc:
+      text-color: rgb(109, 109, 109)
   - button:
       focusable: true
       background-color: rgb(225, 225, 225)
@@ -23,6 +28,13 @@ styles:
       outline-color: teal
   - button.radius:
       corner-radius: 10
+  - textbox:
+      background-color: white
+      outline-color: blue
+      focusable: true
+      text-color: black
+  - "textbox :focused":
+      outline-color: red
 
 widgets:
   - vbox:
@@ -30,6 +42,19 @@ widgets:
       - Testing Labels!
     - label:
       - Some more testing
+    - textbox:
+        - label:
+            - Please edit this text...
+    - hbox:
+      - image:
+        - cat.png
+      - vbox:
+        - label:
+          - CAT
+          - class: header
+        - label:
+          - The cat (Felis catus, or Felis silvestris catus, literally "woodland cat"),\noften referred to as the domestic cat to distinguish from other felids\nand felines, is a small, typically furry, carnivorous mammal.
+          - class: desc
     - button:
       - id: button-a
       - class: testing foo

@@ -11,7 +11,7 @@ namespace Ngco.Standalone {
 		public AppWindow() : base(
 			1280, 720, new GraphicsMode(32, 24, 8, 0), "Ngco.Standalone",
 			GameWindowFlags.Default, DisplayDevice.Default, 4, 1, GraphicsContextFlags.ForwardCompatible
-		) => Context = new Context(new Renderer { Scale = 2 });
+		) => Context = new Context(new Renderer { Scale = 1 });
 
 		protected override void OnRenderFrame(FrameEventArgs e) {
 			Context.Renderer.Width  = Width;
