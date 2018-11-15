@@ -6,8 +6,7 @@ namespace Ngco.Widgets {
 		public int HPadding = 10;
 		public int VPadding = 10;
 
-        public override void Measure(Size region)
-        {
+        public override void Measure(Size region) {
             Size rowSize = new Size(region.Width, region.Height / Children.Count);
             var bb = new Rect(new Point(), new Size());
             Size contentSize = new Size();
@@ -32,8 +31,7 @@ namespace Ngco.Widgets {
             ApplyLayoutSize();
         }
 
-        public override void Layout(Rect region)
-        {
+        public override void Layout(Rect region) {
             Point currentWidgetPosition = region.TopLeft;
             int columnHeight = region.Size.Height;
 
