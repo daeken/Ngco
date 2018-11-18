@@ -6,16 +6,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="layout.yml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Include="layout.yml" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Ngco.Standalone\Ngco.Standalone.csproj" />
       <ProjectReference Include="..\Ngco\Ngco.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="layout.yml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

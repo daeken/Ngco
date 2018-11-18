@@ -54,15 +54,14 @@ namespace Ngco {
 
 			foreach(var sub in (YamlSequenceNode) body) {
 				if (sub is YamlScalarNode scalar) {
-					if (cls == "label") {
-						((Label)widget).Text = scalar.Value;
-						continue;
-					}
+					switch(cls) {
+						case "label":
+							((Label)widget).Text = scalar.Value;
+							continue;
 
-					if (cls == "image") {
-						Debug.Assert(cls == "image");
-						((Image)widget).Path = scalar.Value;
-						continue;
+						case "image":
+							((Image)widget).Path = scalar.Value;
+							continue;
 					}
 				}
 
@@ -126,6 +125,9 @@ namespace Ngco {
 						break;
 					case "enabled":
 						style.Enabled = ParseBool(value);
+						break;
+					case "multiline":
+						style.Multiline = ParseBool(value);
 						break;
 					case string x: throw new NotSupportedException($"Unknown style property {x}");
 				}

@@ -45,8 +45,8 @@ namespace Ngco {
 				ScalePaint(paint));
 		}
 
-		public void DrawText(string text, float x, float y, SKPaint paint) {
-			var lines = text.Split("\\n");
+		public void DrawText(string text, float x, float y, SKPaint paint, bool multiline) {
+			var lines = multiline ? text.Split("\\n") : new string[] { text };
 
 			for(int i = 0; i < lines.Length; i++)
 				Canvas.DrawText(lines[i], x * Scale, (y + (i * paint.TextSize)) * Scale, ScalePaint(paint));

@@ -8,6 +8,7 @@ styles:
       font-family: Arial
       focusable: false
       enabled: true
+      multiline: false
       corner-radius: 0
   - hbox > .testing:
       text-color: green
@@ -17,6 +18,7 @@ styles:
       text-size: 75
   - label .desc:
       text-color: rgb(109, 109, 109)
+      multiline: true
   - button:
       focusable: true
       background-color: rgb(225, 225, 225)

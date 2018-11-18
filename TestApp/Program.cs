@@ -13,9 +13,8 @@ namespace TestApp {
 		Program() {
 			Title = "TestApp";
 
-			var layoutFile = Assembly.GetCallingAssembly().GetManifestResourceStream("TestApp.layout.yml");
-			var widgets = Loader.Load(Context, new StreamReader(layoutFile).ReadToEnd());
-			if(widgets.Count == 1)
+			var widgets = Loader.Load(Context, File.ReadAllText("layout.yml"));
+			if (widgets.Count == 1)
 				Context.Widget = widgets[0];
 			else {
 				var container = new VBox();
