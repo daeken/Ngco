@@ -141,21 +141,17 @@ namespace Ngco {
 		}
 
 		bool? multiline;
-		bool? _Multiline
-		{
-			get
-			{
+		bool? _Multiline {
+			get {
 				if (multiline != null) return multiline;
-				foreach (var style in Parents)
-				{
+				foreach (var style in Parents) {
 					var val = style._Multiline;
 					if (val != null) return val;
 				}
 				return null;
 			}
 		}
-		public bool Multiline
-		{
+		public bool Multiline {
 			get => _Multiline ?? (Context.Instance.BaseStyle.multiline ?? throw new NoNullAllowedException());
 			set => multiline = value;
 		}
