@@ -139,5 +139,25 @@ namespace Ngco {
 			get => _CornerRadius ?? (Context.Instance.BaseStyle.cornerRadius ?? throw new NoNullAllowedException());
 			set => cornerRadius = value;
 		}
+
+		bool? multiline;
+		bool? _Multiline
+		{
+			get
+			{
+				if (multiline != null) return multiline;
+				foreach (var style in Parents)
+				{
+					var val = style._Multiline;
+					if (val != null) return val;
+				}
+				return null;
+			}
+		}
+		public bool Multiline
+		{
+			get => _Multiline ?? (Context.Instance.BaseStyle.multiline ?? throw new NoNullAllowedException());
+			set => multiline = value;
+		}
 	}
 }

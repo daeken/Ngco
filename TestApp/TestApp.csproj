@@ -10,4 +10,16 @@
       <ProjectReference Include="..\Ngco\Ngco.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="layout.yml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="cat.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

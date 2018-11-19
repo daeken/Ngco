@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Reflection;
 using Ngco;
 using Ngco.Standalone;
 using Ngco.Widgets;
@@ -11,9 +12,9 @@ namespace TestApp {
 
 		Program() {
 			Title = "TestApp";
-			
+
 			var widgets = Loader.Load(Context, File.ReadAllText("layout.yml"));
-			if(widgets.Count == 1)
+			if (widgets.Count == 1)
 				Context.Widget = widgets[0];
 			else {
 				var container = new VBox();
@@ -23,7 +24,7 @@ namespace TestApp {
 
 			Context.Find("#button-a").Click(_ => "A".Print());
 			Context.Find("#button-b").Click(_ => "B".Print());
-			
+
 			Context.Find("hbox > button").Skip(1).Take(1).AddClass("testing");
 		}
 	}
