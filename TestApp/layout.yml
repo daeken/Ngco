@@ -43,6 +43,8 @@ styles:
       outline-color: blue
       focusable: true
       text-color: black
+      layout:
+        width: 400
   - "textbox :focused":
       outline-color: red
 
