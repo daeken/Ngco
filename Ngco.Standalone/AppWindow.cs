@@ -17,8 +17,7 @@ namespace Ngco.Standalone {
 			GameWindowFlags.Default, DisplayDevice.Default, 4, 1, GraphicsContextFlags.ForwardCompatible
 		) => Context = new Context(new Renderer { Scale = 1 });
 
-        public void MainLoop()
-        {
+        public void MainLoop() {
             Visible = true;
             VSync   = VSyncMode.Off;
             Context.Renderer.Width  = Width;
@@ -34,8 +33,7 @@ namespace Ngco.Standalone {
             RendererThread.Join();
         }
 
-        public void RenderLoop()
-        {
+        public void RenderLoop() {
             MakeCurrent();
             Stopwatch timer = new Stopwatch();
             timer.Start();
