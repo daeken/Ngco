@@ -155,5 +155,21 @@ namespace Ngco {
 			get => _Multiline ?? (Context.Instance.BaseStyle.multiline ?? throw new NoNullAllowedException());
 			set => multiline = value;
 		}
-	}
+
+        Layout layout;
+        Layout _Layout {
+            get {
+                if (layout != null) return layout;
+                foreach (var style in Parents) {
+                    var val = style._Layout;
+                    if (val != null) return val;
+                }
+                return null;
+            }
+        }
+        public Layout Layout {
+            get => _Layout ?? (Context.Instance.BaseStyle.layout ?? throw new NoNullAllowedException());
+            set => layout = value;
+        }
+    }
 }

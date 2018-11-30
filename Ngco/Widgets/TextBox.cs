@@ -24,13 +24,6 @@ namespace Ngco.Widgets {
 		public override IEnumerator<BaseWidget> GetEnumerator() =>
 			new List<BaseWidget> { Label }.GetEnumerator();
 
-		public override Rect CalculateBoundingBox(Rect region) {
-			var labelBb = Label.CalculateBoundingBox(region.Inset(new Size(10, 10)));
-			var bb = new Rect(region.TopLeft, labelBb.Size + new Size(20, 20));
-
-			return BoundingBox = bb.ClipTo(region);
-		}
-
 		public override void Render(RICanvas canvas) {
 			canvas.Save();
 			canvas.ClipRect(BoundingBox);
@@ -95,5 +88,24 @@ namespace Ngco.Widgets {
 			Clicked += callback;
 			return this;
 		}
-	}
+
+        public override void Measure(Size region)
+        {
+            Label.Measure(new Size(region.Width - (Style.Layout.Padding.Left + Style.Layout.Padding.Right),
+                region.Height - (Style.Layout.Padding.Up + Style.Layout.Padding.Down)));
+            BoundingBox = new Rect(new Point(0, 0), new Size(Label.BoundingBox.Size.Width + Style.Layout.Padding.Left + Style.Layout.Padding.Right,
+                 Label.BoundingBox.Size.Height + Style.Layout.Padding.Up + Style.Layout.Padding.Down));
+            ApplyLayoutSize();
+        }
+
+        public override void Layout(Rect region)
+        {
+            Point labelPosition = new Point();
+            labelPosition.X += Style.Layout.Padding.Left;
+            labelPosition.Y += Style.Layout.Padding.Up;
+            Label.SetPosition(region.TopLeft + labelPosition);
+            Label.BoundingBox.ClipTo(region);
+            Label.Layout(Label.BoundingBox);
+        }
+    }
 }

@@ -36,8 +36,19 @@ namespace Ngco {
 			Widget?.UpdateAll(x => x.UpdateStyles());
 			Renderer.Render(canvas => {
 				canvas.Clear(Color.Win10Grey);
-				Widget?.CalculateBoundingBox(new Rect(0, 0, (int) Math.Ceiling(Renderer.Width / Renderer.Scale),
-					(int) Math.Ceiling(Renderer.Height / Renderer.Scale)));
+                Rect region = new Rect(0, 0, (int)Math.Ceiling(Renderer.Width / Renderer.Scale),
+                    (int)Math.Ceiling(Renderer.Height / Renderer.Scale));
+                var widget = Widget;
+                if (widget != null) {
+                    if (widget.Style.Layout.Width != 0)
+                        region.Size.Width = widget.Style.Layout.Width;
+                    if (widget.Style.Layout.Height != 0)
+                        region.Size.Height = widget.Style.Layout.Height;
+                }
+
+                Widget?.Measure(region.Size);
+                // stretch root element to fill renderer
+                Widget?.Layout(region);
 				Widget?.Render(canvas);
 			});
 		}

@@ -25,8 +25,9 @@ namespace Ngco {
 
 		public virtual bool IsFocusable => false;
 
-		public abstract void Render(RICanvas canvas);
-		public abstract Rect CalculateBoundingBox(Rect region);
+		public abstract void Render (RICanvas canvas);
+		public abstract void Measure(Size region);
+        public abstract void Layout (Rect region);
 
 		public string Id;
 		public BaseWidget Parent;
@@ -106,7 +107,15 @@ namespace Ngco {
 			return this;
 		}
 
-		public void UpdateStyles() {
+        public void SetPosition(Point position) {
+            BoundingBox = new Rect(position, BoundingBox.Size);
+        }
+
+        public void SetSize(Size size) {
+            BoundingBox = new Rect(BoundingBox.TopLeft, size);
+        }
+
+        public void UpdateStyles() {
 			if(!StylesDirty) return;
 			StylesDirty = false;
 			Style.Parents.Clear();
@@ -123,6 +132,14 @@ namespace Ngco {
 				child.UpdateStyles();
 			}
 		}
+
+        public void ApplyLayoutSize()
+        {
+            if (Style.Layout.Width != 0)
+                SetSize(new Size(Style.Layout.Width, BoundingBox.Size.Height));
+            if (Style.Layout.Height != 0)
+                SetSize(new Size(BoundingBox.Size.Width, Style.Layout.Height));
+        }
 
 		public virtual IEnumerator<BaseWidget> GetEnumerator() => Enumerable.Empty<BaseWidget>().GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
