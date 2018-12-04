@@ -33,11 +33,20 @@ namespace Ngco {
 		}
 
 		public void Render() {
-			Widget?.UpdateAll(x => x.UpdateStyles());
-			Renderer.Render(canvas => {
-				canvas.Clear(Color.Win10Grey);
+            lock (this) {
+                Renderer.Render(canvas => {
+                    Widget?.UpdateAll(x => x.UpdateStyles());
+                    canvas.Clear(Color.Win10Grey);
+                    Widget?.Render(canvas);
+                });
+            }
+		}
+
+        public void InvalidateLayout() {
+            lock (this) {
+                Widget?.UpdateAll(x => x.UpdateStyles());
                 Rect region = new Rect(0, 0, (int)Math.Ceiling(Renderer.Width / Renderer.Scale),
-                    (int)Math.Ceiling(Renderer.Height / Renderer.Scale));
+                   (int)Math.Ceiling(Renderer.Height / Renderer.Scale));
                 var widget = Widget;
                 if (widget != null) {
                     if (widget.Style.Layout.Width != 0)
@@ -49,9 +58,8 @@ namespace Ngco {
                 Widget?.Measure(region.Size);
                 // stretch root element to fill renderer
                 Widget?.Layout(region);
-				Widget?.Render(canvas);
-			});
-		}
+            }
+        }
 
 		bool CallAll(BaseWidget inner, Func<BaseWidget, bool> func) {
 			var clist = new List<BaseWidget>();

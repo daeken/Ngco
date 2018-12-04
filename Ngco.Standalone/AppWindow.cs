@@ -3,22 +3,58 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
 using System;
+using System.Threading;
+using System.Diagnostics;
 
 namespace Ngco.Standalone {
 	public class AppWindow : GameWindow {
 		public readonly new Context Context;
+
+        private Thread RendererThread;
 
 		public AppWindow() : base(
 			1280, 720, new GraphicsMode(32, 24, 8, 0), "Ngco.Standalone",
 			GameWindowFlags.Default, DisplayDevice.Default, 4, 1, GraphicsContextFlags.ForwardCompatible
 		) => Context = new Context(new Renderer { Scale = 1 });
 
-		protected override void OnRenderFrame(FrameEventArgs e) {
-			Context.Renderer.Width  = Width;
-			Context.Renderer.Height = Height;
-			Context.Render();
-			SwapBuffers();
-		}
+        public void MainLoop() {
+            Visible = true;
+            VSync   = VSyncMode.Off;
+            Context.Renderer.Width  = Width;
+            Context.Renderer.Height = Height;
+            Context.InvalidateLayout();
+            base.Context.MakeCurrent(null);
+            RendererThread = new Thread(RenderLoop);
+            RendererThread.Start();
+            while (Exists && !IsExiting) {
+                ProcessEvents();
+                Thread.Sleep(16);
+            }
+            RendererThread.Join();
+        }
+
+        public void RenderLoop() {
+            MakeCurrent();
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            float ticksPerFrame = (float)Stopwatch.Frequency / 30;
+            float msPerFrame = 1000f / 30;
+            long ticks = 0;
+            while (Exists && !IsExiting) {
+                Render();
+                ticks = timer.ElapsedTicks;                
+                float msElapsed = (float)ticks * 1000 / Stopwatch.Frequency;
+                Thread.Sleep((int)MathF.Max(1f, msPerFrame - msElapsed));
+                timer.Restart();
+            }
+        }
+
+        public void Render() {
+            Context.Renderer.Width = Width;
+            Context.Renderer.Height = Height;
+            Context.Render();
+            SwapBuffers();
+        }
 
 		protected override void OnMouseMove(MouseMoveEventArgs e) =>
 			Context.MouseMove(new Point((int) Math.Round(e.X / Context.Renderer.Scale), (int) Math.Round(e.Y / Context.Renderer.Scale)));
@@ -36,7 +72,19 @@ namespace Ngco.Standalone {
 			}
 		}
 
-		protected override void OnMouseDown(MouseButtonEventArgs e) =>
+        protected override void OnResize(EventArgs e) {
+            base.OnResize(e);
+            Context.InvalidateLayout();
+        }
+
+        protected override void OnLoad(EventArgs e) {
+            base.OnLoad(e);
+            Context.Renderer.Width  = Width;
+            Context.Renderer.Height = Height;
+            Context.InvalidateLayout();
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e) =>
 			Context.MouseDown(FromOpenTK(e.Button));
 
 		protected override void OnMouseUp(MouseButtonEventArgs e) =>

@@ -36,8 +36,7 @@ namespace Ngco.Widgets {
 			}
 		}
 
-        public override void Measure(Size region)
-        {
+        public override void Measure(Size region) {
             BoundingBox = _Path != "" && File.Exists(_Path) ? new Rect(new Point(), new Size(ImageLoaded.Width, ImageLoaded.Height)) : new Rect();
             ApplyLayoutSize();
         }

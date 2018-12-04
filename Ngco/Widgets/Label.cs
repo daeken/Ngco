@@ -16,8 +16,7 @@ namespace Ngco.Widgets {
 		public Label(string text = "Label") =>
 			Text = text;
 
-        public override void Measure(Size region)
-        {
+        public override void Measure(Size region) {
             var lines = Style.Multiline ? Text.Split("\\n") : new string[] { Text };
             BoundingBox = new Rect(new Point(), new Size((int)Math.Ceiling(Paint.MeasureText(lines.OrderByDescending(s => s.Length).First())),
                 Style.TextSize * lines.Length));

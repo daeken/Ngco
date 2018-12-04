@@ -8,7 +8,7 @@ using PrettyPrinter;
 
 namespace TestApp {
 	class Program : AppWindow {
-		static void Main() => new Program().Run();
+        static void Main() => new Program().MainLoop();
 
 		Program() {
 			Title = "TestApp";
@@ -26,6 +26,8 @@ namespace TestApp {
 			Context.Find("#button-b").Click(_ => "B".Print());
 
 			Context.Find("hbox > button").Skip(1).Take(1).AddClass("testing");
+
+            Context.InvalidateLayout();
 		}
 	}
 }

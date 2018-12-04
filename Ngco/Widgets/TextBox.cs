@@ -89,8 +89,7 @@ namespace Ngco.Widgets {
 			return this;
 		}
 
-        public override void Measure(Size region)
-        {
+        public override void Measure(Size region) {
             Label.Measure(new Size(region.Width - (Style.Layout.Padding.Left + Style.Layout.Padding.Right),
                 region.Height - (Style.Layout.Padding.Up + Style.Layout.Padding.Down)));
             BoundingBox = new Rect(new Point(0, 0), new Size(Label.BoundingBox.Size.Width + Style.Layout.Padding.Left + Style.Layout.Padding.Right,
@@ -98,8 +97,7 @@ namespace Ngco.Widgets {
             ApplyLayoutSize();
         }
 
-        public override void Layout(Rect region)
-        {
+        public override void Layout(Rect region) {
             Point labelPosition = new Point();
             labelPosition.X += Style.Layout.Padding.Left;
             labelPosition.Y += Style.Layout.Padding.Up;

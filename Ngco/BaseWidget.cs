@@ -133,8 +133,7 @@ namespace Ngco {
 			}
 		}
 
-        public void ApplyLayoutSize()
-        {
+        public void ApplyLayoutSize() {
             if (Style.Layout.Width != 0)
                 SetSize(new Size(Style.Layout.Width, BoundingBox.Size.Height));
             if (Style.Layout.Height != 0)
