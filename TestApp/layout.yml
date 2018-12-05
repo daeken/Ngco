@@ -54,6 +54,19 @@ widgets:
                 and felines, is a small, typically furry, carnivorous mammal.
             - class: desc
             - multiline: true
+    - checkbox:
+        - label: checkbox1
+        - checked: true
+    - checkbox:
+        - label: checkbox2
+    - vbox:
+        - radiobutton:
+            - label: radio1
+            - checked: true
+        - radiobutton:
+            - label: radio2
+        - radiobutton:
+            - label: radio3
     - button:
         - id: button-a
         - class: testing foo

@@ -38,9 +38,9 @@ namespace Ngco.Widgets
 
         public override void Load(Dictionary<string, string> properties)
         {
-            if (properties.TryGetValue("label", out string imagePath))
+            if (properties.TryGetValue("label", out string label))
             {
-                Label = new Label(imagePath);
+                Label = new Label(label);
             }
         }
 

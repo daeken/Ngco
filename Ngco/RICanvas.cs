@@ -69,5 +69,17 @@ namespace Ngco
                                 ScalePaint(paint));
             }
         }
+
+        public void DrawCircle(Point center, float radius, SKPaint paint)
+        {
+            Canvas.DrawCircle(center.X * Scale, center.Y * Scale, radius * Scale, paint);
+        }
+
+        public void DrawPath(SKPath path, Point point, SKPaint paint)
+        {
+            path.Transform(SKMatrix.MakeScale(Scale, Scale));
+
+            Canvas.DrawPath(path, paint);
+        }
     }
 }
