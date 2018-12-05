@@ -1,5 +1,7 @@
-﻿namespace Ngco {
-    public enum HorizontalAlignment {
+﻿namespace Ngco
+{
+    public enum HorizontalAlignment
+    {
         Left,
         Center,
         Right,

@@ -4,143 +4,182 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Ngco {
-	public abstract class BaseWidget : IEnumerable<BaseWidget> {
-		public Rect BoundingBox { get; protected set; }
-		public bool Focusable => IsFocusable && Style.Focusable;
+namespace Ngco
+{
+    public abstract class BaseWidget : IEnumerable<BaseWidget>
+    {
+        public readonly List<string> Classes = new List<string>();
+        public readonly Style Style = new Style();
 
-		public bool Focused {
-			get => this == Context.Instance.Focused;
-			set {
-				if(!Style.Focusable) return;
-				if(value)
-					Context.Instance.Focused = this;
-				else if(Focused)
-					Context.Instance.Focused = null;
-			}
-		}
+        public virtual bool IsFocusable => false;
 
-		public readonly List<string> Classes = new List<string>();
-		public readonly Style Style = new Style();
+        public abstract void Render(RICanvas canvas);
+        public abstract void Measure(Size region);
+        public abstract void Layout(Rect region);
 
-		public virtual bool IsFocusable => false;
+        public string     Id;
+        public BaseWidget Parent;
 
-		public abstract void Render (RICanvas canvas);
-		public abstract void Measure(Size region);
-        public abstract void Layout (Rect region);
+        public Rect BoundingBox { get; protected set; }
 
-		public string Id;
-		public BaseWidget Parent;
+        public bool Focusable => IsFocusable && Style.Focusable;
 
-		bool _MouseOver;
-		public bool MouseOver {
-			get => _MouseOver;
-			set {
-				StylesDirty = StylesDirty || _MouseOver != value;
-				_MouseOver = value;
-			}
-		}
-		bool _MouseCurrentlyClicked;
-		public bool MouseCurrentlyClicked {
-			get => _MouseCurrentlyClicked;
-			set {
-				StylesDirty = StylesDirty || _MouseCurrentlyClicked != value;
-				_MouseCurrentlyClicked = value;
-			}
-		}
+        public bool Focused
+        {
+            get => this == Context.Instance.Focused;
+            set
+            {
+                if (!Style.Focusable) return;
+                if (value) Context.Instance.Focused = this;
+                else if (Focused) Context.Instance.Focused = null;
+            }
+        }
 
-		internal bool StylesDirty = true;
+        internal bool StylesDirty = true;
+        private  bool _MouseOver;
+        private  bool _MouseCurrentlyClicked;
 
-		public virtual bool MouseDown(MouseButton button, Point location) {
-			if(button == MouseButton.Left && !BoundingBox.Contains(location)) {
-				MouseCurrentlyClicked = false;
-				return false;
-			}
+        public bool MouseOver
+        {
+            get => _MouseOver;
+            set
+            {
+                StylesDirty = StylesDirty || _MouseOver != value;
+                _MouseOver  = value;
+            }
+        }
 
-			foreach(var child in this)
-				child.MouseDown(button, location);
+        public bool MouseCurrentlyClicked
+        {
+            get => _MouseCurrentlyClicked;
+            set
+            {
+                StylesDirty            = StylesDirty || _MouseCurrentlyClicked != value;
+                _MouseCurrentlyClicked = value;
+            }
+        }
 
-			if(button == MouseButton.Left)
-				MouseCurrentlyClicked = true;
-			
-			return true;
-		}
+        public virtual bool MouseDown(MouseButton button, Point location)
+        {
+            if (button == MouseButton.Left && !BoundingBox.Contains(location))
+            {
+                MouseCurrentlyClicked = false;
 
-		public virtual void MouseUp(MouseButton button, Point location) {
-			if(button == MouseButton.Left)
-				MouseCurrentlyClicked = false;
-			
-			if(BoundingBox.Contains(location))
-				foreach(var child in this)
-					child.MouseUp(button, location);
-		}
+                return false;
+            }
 
-		public virtual bool MouseMove(MouseButton buttons, Point location) {
-			if(!BoundingBox.Contains(location)) {
-				UpdateAll(x => x.MouseOver = false);
-				return false;
-			}
+            foreach (var child in this)
+            {
+                child.MouseDown(button, location);
+            }
 
-			MouseOver = true;
-			foreach(var child in this)
-				child.MouseMove(buttons, location);
-			return true;
-		}
+            if (button == MouseButton.Left) MouseCurrentlyClicked = true;
 
-		public virtual bool KeyDown(Key key) => false;
-		public virtual bool KeyUp(Key key) => false;
-		public virtual bool KeyPress(char key) => false;
+            return true;
+        }
 
-		public void UpdateAll(Action<BaseWidget> callback) {
-			callback(this);
-			this.ForEach(x => x.UpdateAll(callback));
-		}
+        public virtual void MouseUp(MouseButton button, Point location)
+        {
+            if (button == MouseButton.Left) MouseCurrentlyClicked = false;
 
-		public BaseWidget SetId(string id) {
-			Id = id;
-			return this;
-		}
+            if (BoundingBox.Contains(location))
+            {
+                foreach (var child in this)
+                {
+                    child.MouseUp(button, location);
+                }
+            }
+        }
 
-		public BaseWidget AddClass(string name) {
-			Classes.AddRange(name.Split(' ').Where(x => x.Length != 0));
-			StylesDirty = true;
-			return this;
-		}
+        public virtual bool MouseMove(MouseButton buttons, Point location)
+        {
+            if (!BoundingBox.Contains(location))
+            {
+                UpdateAll(x => x.MouseOver = false);
 
-        public void SetPosition(Point position) {
+                return false;
+            }
+
+            MouseOver = true;
+
+            foreach (var child in this)
+            {
+                child.MouseMove(buttons, location);
+            }
+
+            return true;
+        }
+
+        public virtual bool KeyDown(Key key) => false;
+        public virtual bool KeyUp(Key key) => false;
+        public virtual bool KeyPress(char key) => false;
+
+        public void UpdateAll(Action<BaseWidget> callback)
+        {
+            callback(this);
+            this.ForEach(x => x.UpdateAll(callback));
+        }
+
+        public BaseWidget SetId(string id)
+        {
+            Id = id;
+
+            return this;
+        }
+
+        public BaseWidget AddClass(string name)
+        {
+            Classes.AddRange(name.Split(' ').Where(x => x.Length != 0));
+            StylesDirty = true;
+
+            return this;
+        }
+
+        public void SetPosition(Point position)
+        {
             BoundingBox = new Rect(position, BoundingBox.Size);
         }
 
-        public void SetSize(Size size) {
+        public void SetSize(Size size)
+        {
             BoundingBox = new Rect(BoundingBox.TopLeft, size);
         }
 
-        public void UpdateStyles() {
-			if(!StylesDirty) return;
-			StylesDirty = false;
-			Style.Parents.Clear();
-			foreach(var style in Context.Instance.Styles)
-				if(style.Selector.Match(this))
-					Style.Parents.Add(style);
-			var parent = Parent;
-			while(parent != null) {
-				Style.Parents.AddRange(parent.Style.Parents);
-				parent = parent.Parent;
-			}
-			foreach(var child in this) {
-				child.StylesDirty = true;
-				child.UpdateStyles();
-			}
-		}
+        public void UpdateStyles()
+        {
+            if (!StylesDirty) return;
 
-        public void ApplyLayoutSize() {
-            if (Style.Layout.Width != 0)
-                SetSize(new Size(Style.Layout.Width, BoundingBox.Size.Height));
-            if (Style.Layout.Height != 0)
-                SetSize(new Size(BoundingBox.Size.Width, Style.Layout.Height));
+            StylesDirty = false;
+            Style.Parents.Clear();
+
+            foreach (Style style in Context.Instance.Styles)
+            {
+                if (style.Selector.Match(this)) Style.Parents.Add(style);
+            }
+
+            BaseWidget parent = Parent;
+
+            while (parent != null)
+            {
+                Style.Parents.AddRange(parent.Style.Parents);
+                parent = parent.Parent;
+            }
+
+            foreach (var child in this)
+            {
+                child.StylesDirty = true;
+                child.UpdateStyles();
+            }
         }
 
-		public virtual IEnumerator<BaseWidget> GetEnumerator() => Enumerable.Empty<BaseWidget>().GetEnumerator();
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-	}
+        public void ApplyLayoutSize()
+        {
+            if (Style.Layout.Width != 0)  SetSize(new Size(Style.Layout.Width, BoundingBox.Size.Height));
+            if (Style.Layout.Height != 0) SetSize(new Size(BoundingBox.Size.Width, Style.Layout.Height));
+        }
+
+        public virtual IEnumerator<BaseWidget> GetEnumerator() => Enumerable.Empty<BaseWidget>().GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
 }
