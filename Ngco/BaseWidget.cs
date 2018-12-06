@@ -130,6 +130,7 @@ namespace Ngco
         public BaseWidget AddClass(string name)
         {
             Classes.AddRange(name.Split(' ').Where(x => x.Length != 0));
+            
             StylesDirty = true;
 
             return this;
