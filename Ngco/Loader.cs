@@ -71,58 +71,39 @@ namespace Ngco
                 default: throw new NotSupportedException($"Unknown widget class: {cls}");
             }
 
+            widget.Load(body);
+
             foreach (YamlNode sub in (YamlSequenceNode)body)
             {
-                if (sub is YamlScalarNode scalar)
+                if (!(sub is YamlScalarNode))
                 {
-                    switch (cls)
+                    var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
+                    string key                  = keyNode.ToString().ToLower();
+
+                    if (widget is BaseContainer container)
                     {
-                        case "label":
-                            ((Label)widget).Text = scalar.Value;
-                            continue;
+                        if (valueNode is YamlSequenceNode || valueNode is YamlMappingNode)
+                        {
+                            BaseWidget child = ParseNode((YamlMappingNode)sub);
 
-                        case "image":
-                            ((Image)widget).Path = scalar.Value;
-                            continue;
-                    }
-                }
-
-                var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
-                string key                  = keyNode.ToString().ToLower();
-
-                if (valueNode is YamlSequenceNode || valueNode is YamlMappingNode)
-                {
-                    BaseWidget child = ParseNode((YamlMappingNode)sub);
-
-                    if (cls == "button")
-                    {
-                        ((Button)widget).Label = child;
-                    }
-                    else if (cls == "textbox")
-                    {
-                        ((TextBox)widget).Label = child;
+                            container.Add(child);
+                        }
                     }
                     else
                     {
-                        ((BaseContainer)widget).Add(child);
-                    }
-                }
-                else
-                {
-                    Debug.Assert(valueNode is YamlScalarNode);
+                        string value = valueNode.ToString();
 
-                    string value = valueNode.ToString();
+                        switch (key)
+                        {
+                            case "id":
+                                widget.SetId(value);
+                                break;
+                            case "class":
+                                widget.AddClass(value);
+                                break;
 
-                    switch (key)
-                    {
-                        case "id":
-                            widget.SetId(value);
-                            break;
-                        case "class":
-                            widget.AddClass(value);
-                            break;
-
-                        default: throw new NotSupportedException($"Unknown property for widget: {key}");
+                            default: throw new NotSupportedException($"Unknown property for widget: {key}");
+                        }
                     }
                 }
             }

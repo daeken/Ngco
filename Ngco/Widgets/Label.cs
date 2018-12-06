@@ -1,6 +1,7 @@
 using SkiaSharp;
 using System;
 using System.Linq;
+using YamlDotNet.RepresentationModel;
 
 namespace Ngco.Widgets
 {
@@ -17,6 +18,32 @@ namespace Ngco.Widgets
         };
 
         public Label(string text = "Label") => Text = text;
+
+        public override void Load(YamlNode propertiesNode)
+        {
+            var properties = (YamlSequenceNode)propertiesNode;
+            for (int index = 0; index < properties.Children.Count; index++)
+            {
+                var sub = properties.Children[index];
+                if (sub is YamlScalarNode scalar)
+                    Text = scalar.Value;
+                else
+                {
+                    var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
+                    string key                  = keyNode.ToString().ToLower();
+
+                    string value = valueNode.ToString();
+
+                    switch (key)
+                    {
+                        default:
+                            continue;
+                    }
+                }
+
+                ((YamlSequenceNode)propertiesNode).Children.Remove(sub);
+            }
+        }
 
         public override void Measure(Size region)
         {

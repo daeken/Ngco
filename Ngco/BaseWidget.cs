@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using YamlDotNet.RepresentationModel;
 
 namespace Ngco
 {
@@ -16,6 +17,9 @@ namespace Ngco
         public abstract void Render(RICanvas canvas);
         public abstract void Measure(Size region);
         public abstract void Layout(Rect region);
+
+        public virtual void Load(YamlNode propertiesNode) { }
+        public virtual void Load(string   properties)     { }
 
         public string     Id;
         public BaseWidget Parent;

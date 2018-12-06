@@ -1,6 +1,8 @@
 ﻿using SkiaSharp;
 using System;
 using System.IO;
+using System.Linq;
+using YamlDotNet.RepresentationModel;
 
 namespace Ngco.Widgets
 {
@@ -24,6 +26,32 @@ namespace Ngco.Widgets
         {
             _Path = path;
             LoadImage();
+        }
+
+        public override void Load(YamlNode propertiesNode)
+        {
+            var properties = (YamlSequenceNode)propertiesNode;
+            for (int index = 0; index < properties.Children.Count; index++)
+            {
+                var sub = properties.Children[index];
+                if (sub is YamlScalarNode scalar)
+                    Path = scalar.Value;
+                else
+                {
+                    var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
+                    string key                  = keyNode.ToString().ToLower();
+
+                    string value = valueNode.ToString();
+
+                    switch (key)
+                    {
+                        default:
+                            continue;
+                    }
+                }
+
+                ((YamlSequenceNode)propertiesNode).Children.Remove(sub);
+            }
         }
 
         private void LoadImage()

@@ -1,6 +1,8 @@
 ﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using YamlDotNet.RepresentationModel;
 
 namespace Ngco.Widgets
 {
@@ -23,6 +25,31 @@ namespace Ngco.Widgets
         public override bool IsFocusable => true;
 
         public TextBox(BaseWidget label = null) => Label = label;
+
+        public override void Load(YamlNode propertiesNode)
+        {
+            var properties = (YamlSequenceNode)propertiesNode;
+            for (int index = 0; index < properties.Children.Count; index++)
+            {
+                var    sub                  = properties.Children[index];
+                var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
+                string key                  = keyNode.ToString().ToLower();
+
+                string value = valueNode.ToString();
+
+                switch (key)
+                {
+                    case "label":
+                        var label = ((YamlSequenceNode)valueNode).Children.First();
+                        Label     = new Label(label.ToString());
+                        break;
+                    default:
+                        continue;
+                }
+
+                ((YamlSequenceNode)propertiesNode).Children.Remove(sub);
+            }
+        }
 
         public override IEnumerator<BaseWidget> GetEnumerator() => new List<BaseWidget> { Label }.GetEnumerator();
 
