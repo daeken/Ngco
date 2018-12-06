@@ -33,21 +33,19 @@ namespace Ngco.Widgets
             var properties = (YamlSequenceNode)propertiesNode;
             for (int index = 0; index < properties.Children.Count; index++)
             {
-                var sub = properties.Children[index];
-                if (sub is YamlScalarNode scalar)
-                    Path = scalar.Value;
-                else
+                var    sub                  = properties.Children[index];
+                var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
+                string key                  = keyNode.ToString().ToLower();
+
+                string value = valueNode.ToString();
+
+                switch (key)
                 {
-                    var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
-                    string key                  = keyNode.ToString().ToLower();
-
-                    string value = valueNode.ToString();
-
-                    switch (key)
-                    {
-                        default:
-                            continue;
-                    }
+                    case "path":
+                        Path = valueNode.ToString();
+                        break;
+                    default:
+                        continue;
                 }
 
                 ((YamlSequenceNode)propertiesNode).Children.Remove(sub);
@@ -56,6 +54,8 @@ namespace Ngco.Widgets
 
         private void LoadImage()
         {
+            ImageLoaded?.Dispose();
+
             if (_Path != "" && File.Exists(_Path))
             {
                 using (FileStream stream = new FileStream(_Path, FileMode.Open))

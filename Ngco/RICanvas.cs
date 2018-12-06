@@ -59,7 +59,7 @@ namespace Ngco
 
         public void DrawText(string text, float x, float y, SKPaint paint, bool multiline)
         {
-            string[] lines = multiline ? text.Split("\\n") : new string[] { text };
+            string[] lines = multiline ? text.Split("\n") : new string[] { text };
 
             for (int i = 0; i < lines.Length; i++)
             {

@@ -40,8 +40,7 @@ namespace Ngco.Widgets
                 switch (key)
                 {
                     case "label":
-                        var label = ((YamlSequenceNode)valueNode).Children.First();
-                        Label     = new Label(label.ToString());
+                        Label = new Label(valueNode.ToString());
                         break;
                     default:
                         continue;

@@ -24,21 +24,19 @@ namespace Ngco.Widgets
             var properties = (YamlSequenceNode)propertiesNode;
             for (int index = 0; index < properties.Children.Count; index++)
             {
-                var sub = properties.Children[index];
-                if (sub is YamlScalarNode scalar)
-                    Text = scalar.Value;
-                else
+                var    sub                  = properties.Children[index];
+                var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
+                string key                  = keyNode.ToString().ToLower();
+
+                string value = valueNode.ToString();
+
+                switch (key)
                 {
-                    var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
-                    string key                  = keyNode.ToString().ToLower();
-
-                    string value = valueNode.ToString();
-
-                    switch (key)
-                    {
-                        default:
-                            continue;
-                    }
+                    case "label":
+                        Text = valueNode.ToString();
+                        break;
+                    default:
+                        continue;
                 }
 
                 ((YamlSequenceNode)propertiesNode).Children.Remove(sub);
@@ -47,7 +45,7 @@ namespace Ngco.Widgets
 
         public override void Measure(Size region)
         {
-            string[] lines = Style.Multiline ? Text.Split("\\n") : new string[] { Text };
+            string[] lines = Style.Multiline ? Text.Split("\n", StringSplitOptions.RemoveEmptyEntries) : new string[] { Text };
 
             BoundingBox = new Rect(new Point(), new Size((int)Math.Ceiling(Paint.MeasureText(lines.OrderByDescending(s => s.Length).First())),
                                                          Style.TextSize * lines.Length));
