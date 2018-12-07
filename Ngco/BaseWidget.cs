@@ -26,14 +26,44 @@ namespace Ngco
 
         public Rect BoundingBox { get; protected set; }
 
-        public bool Focusable => IsFocusable && Style.Focusable;
+        /// <summary>
+        /// Enabled
+        /// </summary>
+
+        private bool enabled = true;
+
+        bool _Enabled
+        {
+            get
+            {
+                return enabled && Parent._Enabled;
+            }
+        }
+
+        public bool Enabled
+        {
+            get => _Enabled;
+            set => enabled = value;
+        }
+
+        /// <summary>
+        /// Focusable
+        /// </summary>
+
+        private bool _Focusable;
+
+        public bool Focusable
+        {
+            get => _Focusable && IsFocusable;
+            set => _Focusable = value && IsFocusable;
+        }
 
         public bool Focused
         {
             get => this == Context.Instance.Focused;
             set
             {
-                if (!Style.Focusable) return;
+                if (!Focusable) return;
                 if (value) Context.Instance.Focused = this;
                 else if (Focused) Context.Instance.Focused = null;
             }

@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using YamlDotNet.RepresentationModel;
 
+using static Ngco.Parsers;
+
 namespace Ngco
 {
     public class Loader
@@ -101,7 +103,15 @@ namespace Ngco
                             case "class":
                                 widget.AddClass(value);
                                 break;
-
+                            case "enabled":
+                                widget.Enabled = ParseBool(value);
+                                break;
+                            case "focusable":
+                                if (widget.IsFocusable)
+                                    widget.Focusable = ParseBool(value);
+                                else
+                                    throw new NotSupportedException($"{key} is not valid for this widget");
+                                break;
                             default: throw new NotSupportedException($"Unknown property for widget: {key}");
                         }
                     }
@@ -129,9 +139,6 @@ namespace Ngco
                     case "text-size":        style.TextSize        = int.Parse(value);   break;
                     case "font-family":      style.FontFamily      = value;              break;
                     case "corner-radius":    style.CornerRadius    = int.Parse(value);   break;
-                    case "focusable":        style.Focusable       = ParseBool(value);   break;
-                    case "enabled":          style.Enabled         = ParseBool(value);   break;
-                    case "multiline":        style.Multiline       = ParseBool(value);   break;
                     case "layout":           style.Layout          = ParseLayout(value); break;
 
                     case string x: throw new NotSupportedException($"Unknown style property {x}");
@@ -167,17 +174,6 @@ namespace Ngco
                     return new Color(rgb[0], rgb[1], rgb[2]);
 
                 default: throw new NotSupportedException($"Unknown color {value}");
-            }
-        }
-
-        bool ParseBool(string value)
-        {
-            switch (value.ToLower())
-            {
-                case "true":
-                case "1": return true;
-
-                default: return false;
             }
         }
 

@@ -6,8 +6,6 @@ styles:
       text-color: white
       text-size: 30
       font-family: Arial
-      focusable: false
-      enabled: true
       multiline: false
       corner-radius: 0
       layout: 
@@ -28,7 +26,6 @@ styles:
       text-color: rgb(109, 109, 109)
       multiline: true
   - button:
-      focusable: true
       background-color: rgb(225, 225, 225)
   - "button :hover":
       background-color: rgb(180, 213, 230)
@@ -41,7 +38,6 @@ styles:
   - textbox:
       background-color: white
       outline-color: blue
-      focusable: true
       text-color: black
       layout:
         width: 400

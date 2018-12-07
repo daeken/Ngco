@@ -27,7 +27,12 @@ namespace Ngco.Widgets
 
         public override IEnumerator<BaseWidget> GetEnumerator() => new List<BaseWidget> { Label }.GetEnumerator();
 
-        public Button(BaseWidget label = null) => Label = label;
+        public Button(BaseWidget label = null)
+        {
+            Label = label;
+
+            Focusable = true;
+        }
 
         public override void Load(YamlNode propertiesNode)
         {

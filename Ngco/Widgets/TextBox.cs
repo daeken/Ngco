@@ -24,7 +24,12 @@ namespace Ngco.Widgets
 
         public override bool IsFocusable => true;
 
-        public TextBox(BaseWidget label = null) => Label = label;
+        public TextBox(BaseWidget label = null)
+        {
+            Label = label;
+
+            Focusable = true;
+        }
 
         public override void Load(YamlNode propertiesNode)
         {
