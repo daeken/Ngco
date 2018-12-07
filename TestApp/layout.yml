@@ -6,16 +6,7 @@ styles:
       text-color: white
       text-size: 30
       font-family: Arial
-      multiline: false
       corner-radius: 0
-      layout: 
-        width: 0
-        height: 0
-        vertical-alignment: stretch
-        horizontal-alignment: stretch
-        margin: 5
-        padding: 5
-        spacing: 5
   - hbox > .testing:
       text-color: green
       text-size: 75
@@ -24,7 +15,6 @@ styles:
       text-size: 75
   - label .desc:
       text-color: rgb(109, 109, 109)
-      multiline: true
   - button:
       background-color: rgb(225, 225, 225)
   - "button :hover":
@@ -39,8 +29,6 @@ styles:
       background-color: white
       outline-color: blue
       text-color: black
-      layout:
-        width: 400
   - "textbox :focused":
       outline-color: red
 
@@ -65,6 +53,7 @@ widgets:
                 often referred to as the domestic cat to distinguish from other felids
                 and felines, is a small, typically furry, carnivorous mammal.
             - class: desc
+            - multiline: true
     - button:
         - id: button-a
         - class: testing foo

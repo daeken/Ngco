@@ -76,13 +76,13 @@ namespace Ngco.Widgets
             }
         }
 
-        public override void Measure(Size region)
+        public override void OnMeasure(Size region)
         {
             BoundingBox = _Path != "" && File.Exists(_Path) ? new Rect(new Point(), new Size(ImageLoaded.Width, ImageLoaded.Height)) : new Rect();
 
             ApplyLayoutSize();
         }
 
-        public override void Layout(Rect region) {}
+        public override void OnLayout(Rect region) {}
     }
 }

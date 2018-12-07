@@ -56,7 +56,7 @@ namespace Ngco.Widgets
             }
         }
 
-        public override void Measure(Size region)
+        public override void OnMeasure(Size region)
         {
             string[] lines = Multiline ? Text.Split("\n", StringSplitOptions.RemoveEmptyEntries) : new string[] { Text };
 
@@ -76,6 +76,6 @@ namespace Ngco.Widgets
             canvas.Restore();
         }
 
-        public override void Layout(Rect region) { }
+        public override void OnLayout(Rect region) { }
     }
 }

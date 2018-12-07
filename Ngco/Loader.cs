@@ -112,6 +112,9 @@ namespace Ngco
                                 else
                                     throw new NotSupportedException($"{key} is not valid for this widget");
                                 break;
+                            case "layout":
+                                widget.Layout = ParseLayout(value);
+                                break;
                             default: throw new NotSupportedException($"Unknown property for widget: {key}");
                         }
                     }
@@ -139,7 +142,6 @@ namespace Ngco
                     case "text-size":        style.TextSize        = int.Parse(value);   break;
                     case "font-family":      style.FontFamily      = value;              break;
                     case "corner-radius":    style.CornerRadius    = int.Parse(value);   break;
-                    case "layout":           style.Layout          = ParseLayout(value); break;
 
                     case string x: throw new NotSupportedException($"Unknown style property {x}");
                 }

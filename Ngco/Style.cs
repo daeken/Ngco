@@ -185,33 +185,6 @@ namespace Ngco
             set => cornerRadius = value;
         }
 
-        /// <summary>
-        /// Layout
-        /// </summary>
-
-        Layout layout;
-
-        Layout _Layout
-        {
-            get
-            {
-                if (layout != null) return layout;
-
-                foreach (Style style in Parents)
-                {
-                    Layout val = style._Layout;
-
-                    if (val != null) return val;
-                }
-
-                return null;
-            }
-        }
-
-        public Layout Layout
-        {
-            get => _Layout ?? (Context.Instance.BaseStyle.layout ?? throw new NoNullAllowedException());
-            set => layout = value;
-        }
+        
     }
 }

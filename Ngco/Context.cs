@@ -66,14 +66,14 @@ namespace Ngco
 
                 if (widget != null)
                 {
-                    if (widget.Style.Layout.Width != 0)  region.Size.Width = widget.Style.Layout.Width;
-                    if (widget.Style.Layout.Height != 0) region.Size.Height = widget.Style.Layout.Height;
+                    if (widget.Layout.Width != 0)  region.Size.Width = widget.Layout.Width;
+                    if (widget.Layout.Height != 0) region.Size.Height = widget.Layout.Height;
                 }
 
-                Widget?.Measure(region.Size);
+                Widget?.OnMeasure(region.Size);
 
                 // Stretch root element to fill renderer
-                Widget?.Layout(region);
+                Widget?.OnLayout(region);
             }
         }
 

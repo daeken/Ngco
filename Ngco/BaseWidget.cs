@@ -15,8 +15,8 @@ namespace Ngco
         public virtual bool IsFocusable => false;
 
         public abstract void Render(RICanvas canvas);
-        public abstract void Measure(Size region);
-        public abstract void Layout(Rect region);
+        public abstract void OnMeasure(Size region);
+        public abstract void OnLayout(Rect region);
 
         public virtual void Load(YamlNode propertiesNode) { }
         public virtual void Load(string   properties)     { }
@@ -67,6 +67,14 @@ namespace Ngco
                 if (value) Context.Instance.Focused = this;
                 else if (Focused) Context.Instance.Focused = null;
             }
+        }
+
+        private Layout _layout;
+
+        public Layout Layout
+        {
+            get => _layout?? Layout.Default;
+            set => _layout = value;
         }
 
         internal bool StylesDirty = true;
@@ -209,8 +217,8 @@ namespace Ngco
 
         public void ApplyLayoutSize()
         {
-            if (Style.Layout.Width != 0)  SetSize(new Size(Style.Layout.Width, BoundingBox.Size.Height));
-            if (Style.Layout.Height != 0) SetSize(new Size(BoundingBox.Size.Width, Style.Layout.Height));
+            if (Layout.Width != 0)  SetSize(new Size(Layout.Width, BoundingBox.Size.Height));
+            if (Layout.Height != 0) SetSize(new Size(BoundingBox.Size.Width, Layout.Height));
         }
 
         public virtual IEnumerator<BaseWidget> GetEnumerator() => Enumerable.Empty<BaseWidget>().GetEnumerator();
