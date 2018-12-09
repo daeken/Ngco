@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using YamlDotNet.RepresentationModel;
 
-using static Ngco.Parsers;
+using static Ngco.Helpers;
 
 namespace Ngco
 {
@@ -73,7 +73,26 @@ namespace Ngco
                 default: throw new NotSupportedException($"Unknown widget class: {cls}");
             }
 
-            widget.Load(body);
+            var subNode = (YamlSequenceNode)body;
+
+            Dictionary<string, string> properties = new Dictionary<string, string>();
+
+            for (int index = 0; index < subNode.Children.Count; index++)
+            {
+                var sub                  = subNode.Children[index];
+                var (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
+                string key               = keyNode.ToString().ToLower();
+                string value             = valueNode.ToString();
+
+                if (widget.PropertyKeys.Contains(key))
+                {
+                    properties.Add(key, value);
+
+                    subNode.Children.Remove(sub);
+                }
+            }
+
+            widget.Load(properties);
 
             foreach (YamlNode sub in (YamlSequenceNode)body)
             {

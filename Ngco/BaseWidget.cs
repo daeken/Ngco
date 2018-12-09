@@ -12,14 +12,15 @@ namespace Ngco
         public readonly List<string> Classes = new List<string>();
         public readonly Style Style = new Style();
 
+        public virtual string[] PropertyKeys { get; } = new string[0];
+
         public virtual bool IsFocusable => false;
 
         public abstract void Render(RICanvas canvas);
         public abstract void OnMeasure(Size region);
         public abstract void OnLayout(Rect region);
 
-        public virtual void Load(YamlNode propertiesNode) { }
-        public virtual void Load(string   properties)     { }
+        public virtual void Load(Dictionary<string,string> properties) { }
 
         public string     Id;
         public BaseWidget Parent;

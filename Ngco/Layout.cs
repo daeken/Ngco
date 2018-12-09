@@ -13,13 +13,13 @@
             Alignment = new Alignment()
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
+                VerticalAlignment   = VerticalAlignment.Center,
             },
 
             ContentAlignment = new Alignment()
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
+                VerticalAlignment   = VerticalAlignment.Center,
             },
         };
 

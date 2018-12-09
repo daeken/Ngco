@@ -1,5 +1,6 @@
 ﻿using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using YamlDotNet.RepresentationModel;
@@ -9,6 +10,8 @@ namespace Ngco.Widgets
     public class Image : BaseWidget
     {
         private SKBitmap ImageLoaded;
+
+        public override string[] PropertyKeys { get; } = new string[] { "path" }; 
 
         string _Path;
 
@@ -28,27 +31,11 @@ namespace Ngco.Widgets
             LoadImage();
         }
 
-        public override void Load(YamlNode propertiesNode)
+        public override void Load(Dictionary<string, string> properties)
         {
-            var properties = (YamlSequenceNode)propertiesNode;
-            for (int index = 0; index < properties.Children.Count; index++)
+            if(properties.TryGetValue("path", out string imagePath))
             {
-                var    sub                  = properties.Children[index];
-                var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
-                string key                  = keyNode.ToString().ToLower();
-
-                string value = valueNode.ToString();
-
-                switch (key)
-                {
-                    case "path":
-                        Path = valueNode.ToString();
-                        break;
-                    default:
-                        continue;
-                }
-
-                ((YamlSequenceNode)propertiesNode).Children.Remove(sub);
+                Path = imagePath;
             }
         }
 

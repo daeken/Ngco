@@ -10,6 +10,8 @@ namespace Ngco.Widgets
     {
         BaseWidget _Label;
 
+        public override string[] PropertyKeys { get; } = new string[] { "label" };
+
         public BaseWidget Label
         {
             get => _Label;
@@ -31,27 +33,11 @@ namespace Ngco.Widgets
             Focusable = true;
         }
 
-        public override void Load(YamlNode propertiesNode)
+        public override void Load(Dictionary<string, string> properties)
         {
-            var properties = (YamlSequenceNode)propertiesNode;
-            for (int index = 0; index < properties.Children.Count; index++)
+            if (properties.TryGetValue("label", out string imagePath))
             {
-                var    sub                  = properties.Children[index];
-                var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
-                string key                  = keyNode.ToString().ToLower();
-
-                string value = valueNode.ToString();
-
-                switch (key)
-                {
-                    case "label":
-                        Label = new Label(valueNode.ToString());
-                        break;
-                    default:
-                        continue;
-                }
-
-                ((YamlSequenceNode)propertiesNode).Children.Remove(sub);
+                Label = new Label(imagePath);
             }
         }
 

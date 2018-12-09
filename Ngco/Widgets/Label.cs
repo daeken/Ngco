@@ -1,9 +1,10 @@
 using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using YamlDotNet.RepresentationModel;
 
-using static Ngco.Parsers;
+using static Ngco.Helpers;
 
 namespace Ngco.Widgets
 {
@@ -11,12 +12,14 @@ namespace Ngco.Widgets
     {
         public string Text;
 
+        public override string[] PropertyKeys { get; } = new string[] { "label", "multiline" };
+
         SKPaint Paint => new SKPaint
         {
-            Color = Style.TextColor,
+            Color       = Style.TextColor,
             IsAntialias = true,
-            TextSize = Style.TextSize,
-            Typeface = SKTypeface.FromFamilyName(Style.FontFamily ?? "Arial")
+            TextSize    = Style.TextSize,
+            Typeface    = SKTypeface.FromFamilyName(Style.FontFamily ?? "Arial")
         };
 
         private bool _multiline = false;
@@ -29,30 +32,16 @@ namespace Ngco.Widgets
 
         public Label(string text = "Label") => Text = text;
 
-        public override void Load(YamlNode propertiesNode)
+        public override void Load(Dictionary<string, string> properties)
         {
-            var properties = (YamlSequenceNode)propertiesNode;
-            for (int index = 0; index < properties.Children.Count; index++)
+            if (properties.TryGetValue("label", out string imagePath))
             {
-                var sub = properties.Children[index];
-                var (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
-                string key = keyNode.ToString().ToLower();
+                Text = imagePath;
+            }
 
-                string value = valueNode.ToString();
-
-                switch (key)
-                {
-                    case "label":
-                        Text = valueNode.ToString();
-                        break;
-                    case "multiline":
-                        Multiline = ParseBool(valueNode.ToString());
-                        break;
-                    default:
-                        continue;
-                }
-
-                ((YamlSequenceNode)propertiesNode).Children.Remove(sub);
+            if (properties.TryGetValue("multiline", out string isMultiline))
+            {
+                Multiline = ParseBool(isMultiline);
             }
         }
 

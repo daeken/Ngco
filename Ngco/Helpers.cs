@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ngco
 {
-    public static class Parsers
+    public static class Helpers
     {
         public static bool ParseBool(string value)
         {
