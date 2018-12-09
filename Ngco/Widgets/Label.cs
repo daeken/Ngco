@@ -12,7 +12,7 @@ namespace Ngco.Widgets
     {
         public string Text;
 
-        public override string[] PropertyKeys { get; } = new string[] { "label", "multiline" };
+        public override string[] PropertyKeys { get; } = new string[] { "text", "multiline" };
 
         SKPaint Paint => new SKPaint
         {
@@ -34,7 +34,7 @@ namespace Ngco.Widgets
 
         public override void Load(Dictionary<string, string> properties)
         {
-            if (properties.TryGetValue("label", out string imagePath))
+            if (properties.TryGetValue("text", out string imagePath))
             {
                 Text = imagePath;
             }

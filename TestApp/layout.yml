@@ -35,20 +35,20 @@ styles:
 widgets:
   - vbox:
     - label:
-        - label: Testing Labels!
+        - text: Testing Labels!
     - label:
-        - label: Some more testing
+        - text: Some more testing
     - textbox:
-        - label: Please edit this text...
+        - text: Please edit this text...
     - hbox:
       - image:
         - path: .\cat.png
       - vbox:
         - label: 
-            - label: CAT
+            - text: CAT
             - class: header
         - label: 
-            - label : |
+            - text : |
                 The cat (Felis catus, or Felis silvestris catus, literally "woodland cat"),
                 often referred to as the domestic cat to distinguish from other felids
                 and felines, is a small, typically furry, carnivorous mammal.
@@ -71,7 +71,7 @@ widgets:
             - label:  Baz
     - hbox:
         - label:
-            - label: And even more
+            - text: And even more
             - class: testing
         - label: 
-            - label: Aaaaand more
+            - text: Aaaaand more

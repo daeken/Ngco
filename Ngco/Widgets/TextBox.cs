@@ -10,7 +10,7 @@ namespace Ngco.Widgets
     {
         BaseWidget _Label;
 
-        public override string[] PropertyKeys { get; } = new string[] { "label" };
+        public override string[] PropertyKeys { get; } = new string[] { "text" };
 
         public BaseWidget Label
         {
@@ -35,7 +35,7 @@ namespace Ngco.Widgets
 
         public override void Load(Dictionary<string, string> properties)
         {
-            if (properties.TryGetValue("label", out string imagePath))
+            if (properties.TryGetValue("text", out string imagePath))
             {
                 Label = new Label(imagePath);
             }
