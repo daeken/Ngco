@@ -89,6 +89,8 @@ namespace Ngco
                     properties.Add(key, value);
 
                     subNode.Children.Remove(sub);
+                    
+                    index--;
                 }
             }
 
