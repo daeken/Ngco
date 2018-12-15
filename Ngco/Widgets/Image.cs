@@ -1,12 +1,17 @@
 ﻿using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using YamlDotNet.RepresentationModel;
 
 namespace Ngco.Widgets
 {
     public class Image : BaseWidget
     {
         private SKBitmap ImageLoaded;
+
+        public override string[] PropertyKeys { get; } = new string[] { "path" }; 
 
         string _Path;
 
@@ -26,8 +31,18 @@ namespace Ngco.Widgets
             LoadImage();
         }
 
+        public override void Load(Dictionary<string, string> properties)
+        {
+            if(properties.TryGetValue("path", out string imagePath))
+            {
+                Path = imagePath;
+            }
+        }
+
         private void LoadImage()
         {
+            ImageLoaded?.Dispose();
+
             if (_Path != "" && File.Exists(_Path))
             {
                 using (FileStream stream = new FileStream(_Path, FileMode.Open))
@@ -48,13 +63,13 @@ namespace Ngco.Widgets
             }
         }
 
-        public override void Measure(Size region)
+        public override void OnMeasure(Size region)
         {
             BoundingBox = _Path != "" && File.Exists(_Path) ? new Rect(new Point(), new Size(ImageLoaded.Width, ImageLoaded.Height)) : new Rect();
 
             ApplyLayoutSize();
         }
 
-        public override void Layout(Rect region) {}
+        public override void OnLayout(Rect region) {}
     }
 }

@@ -1,12 +1,16 @@
 ﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using YamlDotNet.RepresentationModel;
 
 namespace Ngco.Widgets
 {
     public class TextBox : BaseWidget
     {
         BaseWidget _Label;
+
+        public override string[] PropertyKeys { get; } = new string[] { "text" };
 
         public BaseWidget Label
         {
@@ -22,7 +26,20 @@ namespace Ngco.Widgets
 
         public override bool IsFocusable => true;
 
-        public TextBox(BaseWidget label = null) => Label = label;
+        public TextBox(BaseWidget label = null)
+        {
+            Label = label;
+
+            Focusable = true;
+        }
+
+        public override void Load(Dictionary<string, string> properties)
+        {
+            if (properties.TryGetValue("text", out string imagePath))
+            {
+                Label = new Label(imagePath);
+            }
+        }
 
         public override IEnumerator<BaseWidget> GetEnumerator() => new List<BaseWidget> { Label }.GetEnumerator();
 
@@ -105,27 +122,27 @@ namespace Ngco.Widgets
             return this;
         }
 
-        public override void Measure(Size region)
+        public override void OnMeasure(Size region)
         {
-            Label.Measure(new Size(region.Width  - (Style.Layout.Padding.Left + Style.Layout.Padding.Right),
-                                   region.Height - (Style.Layout.Padding.Up   + Style.Layout.Padding.Down)));
+            Label.OnMeasure(new Size(region.Width  - (Layout.Padding.Left + Layout.Padding.Right),
+                                   region.Height - (Layout.Padding.Up   + Layout.Padding.Down)));
 
-            BoundingBox = new Rect(new Point(0, 0), new Size(Label.BoundingBox.Size.Width  + Style.Layout.Padding.Left + Style.Layout.Padding.Right,
-                                                             Label.BoundingBox.Size.Height + Style.Layout.Padding.Up   + Style.Layout.Padding.Down));
+            BoundingBox = new Rect(new Point(0, 0), new Size(Label.BoundingBox.Size.Width  + Layout.Padding.Left + Layout.Padding.Right,
+                                                             Label.BoundingBox.Size.Height + Layout.Padding.Up   + Layout.Padding.Down));
 
             ApplyLayoutSize();
         }
 
-        public override void Layout(Rect region)
+        public override void OnLayout(Rect region)
         {
             Point labelPosition = new Point();
 
-            labelPosition.X += Style.Layout.Padding.Left;
-            labelPosition.Y += Style.Layout.Padding.Up;
+            labelPosition.X += Layout.Padding.Left;
+            labelPosition.Y += Layout.Padding.Up;
 
             Label.SetPosition(region.TopLeft + labelPosition);
             Label.BoundingBox.ClipTo(region);
-            Label.Layout(Label.BoundingBox);
+            Label.OnLayout(Label.BoundingBox);
         }
     }
 }

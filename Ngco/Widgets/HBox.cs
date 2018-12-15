@@ -8,7 +8,7 @@ namespace Ngco.Widgets
         public int HPadding = 10;
         public int VPadding = 10;
 
-        public override void Measure(Size region)
+        public override void OnMeasure(Size region)
         {
             Size rowSize     = new Size(region.Width, region.Height / Children.Count);
             Rect bb          = new Rect(new Point(), new Size());
@@ -18,7 +18,7 @@ namespace Ngco.Widgets
             {
                 BaseWidget widget = Children[i];
 
-                widget.Measure(rowSize);
+                widget.OnMeasure(rowSize);
 
                 if (i == 0)
                 {
@@ -28,12 +28,12 @@ namespace Ngco.Widgets
                 else
                 {
                     contentSize.Height = Math.Max(contentSize.Height, widget.BoundingBox.Size.Height);
-                    contentSize.Width  = contentSize.Width + widget.BoundingBox.Size.Width + Style.Layout.Spacing;
+                    contentSize.Width  = contentSize.Width + widget.BoundingBox.Size.Width + Layout.Spacing;
                 }
             }
 
-            Size paddedSize = new Size(contentSize.Width  + Style.Layout.Padding.Left + Style.Layout.Padding.Right,
-                                       contentSize.Height + Style.Layout.Padding.Up   + Style.Layout.Padding.Down);
+            Size paddedSize = new Size(contentSize.Width  + Layout.Padding.Left + Layout.Padding.Right,
+                                       contentSize.Height + Layout.Padding.Up   + Layout.Padding.Down);
 
             BoundingBox = bb;
 
@@ -41,7 +41,7 @@ namespace Ngco.Widgets
             ApplyLayoutSize();
         }
 
-        public override void Layout(Rect region)
+        public override void OnLayout(Rect region)
         {
             Point currentWidgetPosition = region.TopLeft;
             int   columnHeight          = region.Size.Height;
@@ -53,11 +53,11 @@ namespace Ngco.Widgets
 
                 if (i == 0)
                 {
-                    currentWidgetPosition.X += Style.Layout.Padding.Left;
-                    currentWidgetPosition.Y += Style.Layout.Padding.Up;
+                    currentWidgetPosition.X += Layout.Padding.Left;
+                    currentWidgetPosition.Y += Layout.Padding.Up;
                 }
 
-                int paddingOffset = -Style.Layout.Padding.Down;
+                int paddingOffset = -Layout.Padding.Down;
                 int midY          = widgetPosition.Y + (int)Math.Ceiling((float)columnHeight / 2);
 
                 // Reposition widget
@@ -68,12 +68,12 @@ namespace Ngco.Widgets
                 // Apply offset
                 widgetPosition.Y        += paddingOffset;
                 widgetPosition           = widgetPosition + currentWidgetPosition;
-                currentWidgetPosition.X += widget.BoundingBox.Size.Width + Style.Layout.Spacing;
+                currentWidgetPosition.X += widget.BoundingBox.Size.Width + Layout.Spacing;
 
                 // Update position
                 widget.SetPosition(widgetPosition);
                 widget.BoundingBox.ClipTo(region);
-                widget.Layout(widget.BoundingBox);
+                widget.OnLayout(widget.BoundingBox);
             }
         }
 

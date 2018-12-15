@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using YamlDotNet.RepresentationModel;
 
+using static Ngco.Helpers;
+
 namespace Ngco
 {
     public class Loader
@@ -71,58 +73,69 @@ namespace Ngco
                 default: throw new NotSupportedException($"Unknown widget class: {cls}");
             }
 
+            var subNode = (YamlSequenceNode)body;
+
+            Dictionary<string, string> properties = new Dictionary<string, string>();
+
+            for (int index = 0; index < subNode.Children.Count; index++)
+            {
+                var sub                  = subNode.Children[index];
+                var (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
+                string key               = keyNode.ToString().ToLower();
+                string value             = valueNode.ToString();
+
+                if (widget.PropertyKeys.Contains(key))
+                {
+                    properties.Add(key, value);
+
+                    subNode.Children.Remove(sub);
+                }
+            }
+
+            widget.Load(properties);
+
             foreach (YamlNode sub in (YamlSequenceNode)body)
             {
-                if (sub is YamlScalarNode scalar)
+                if (!(sub is YamlScalarNode))
                 {
-                    switch (cls)
+                    var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
+                    string key                  = keyNode.ToString().ToLower();
+
+                    if (widget is BaseContainer container)
                     {
-                        case "label":
-                            ((Label)widget).Text = scalar.Value;
-                            continue;
+                        if (valueNode is YamlSequenceNode || valueNode is YamlMappingNode)
+                        {
+                            BaseWidget child = ParseNode((YamlMappingNode)sub);
 
-                        case "image":
-                            ((Image)widget).Path = scalar.Value;
-                            continue;
-                    }
-                }
-
-                var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
-                string key                  = keyNode.ToString().ToLower();
-
-                if (valueNode is YamlSequenceNode || valueNode is YamlMappingNode)
-                {
-                    BaseWidget child = ParseNode((YamlMappingNode)sub);
-
-                    if (cls == "button")
-                    {
-                        ((Button)widget).Label = child;
-                    }
-                    else if (cls == "textbox")
-                    {
-                        ((TextBox)widget).Label = child;
+                            container.Add(child);
+                        }
                     }
                     else
                     {
-                        ((BaseContainer)widget).Add(child);
-                    }
-                }
-                else
-                {
-                    Debug.Assert(valueNode is YamlScalarNode);
+                        string value = valueNode.ToString();
 
-                    string value = valueNode.ToString();
-
-                    switch (key)
-                    {
-                        case "id":
-                            widget.SetId(value);
-                            break;
-                        case "class":
-                            widget.AddClass(value);
-                            break;
-
-                        default: throw new NotSupportedException($"Unknown property for widget: {key}");
+                        switch (key)
+                        {
+                            case "id":
+                                widget.SetId(value);
+                                break;
+                            case "class":
+                                widget.AddClass(value);
+                                break;
+                            case "enabled":
+                                widget.Enabled = ParseBool(value);
+                                break;
+                            case "focusable":
+                                if (widget.IsFocusable)
+                                    widget.Focusable = ParseBool(value);
+                                else
+                                    throw new NotSupportedException($"{key} is not valid for this widget");
+                                break;
+                            case "layout":
+                                widget.Layout = ParseLayout(value);
+                                break;
+                            default: throw new NotSupportedException($"Unknown property for widget: {key}");
+                        }
                     }
                 }
             }
@@ -148,10 +161,6 @@ namespace Ngco
                     case "text-size":        style.TextSize        = int.Parse(value);   break;
                     case "font-family":      style.FontFamily      = value;              break;
                     case "corner-radius":    style.CornerRadius    = int.Parse(value);   break;
-                    case "focusable":        style.Focusable       = ParseBool(value);   break;
-                    case "enabled":          style.Enabled         = ParseBool(value);   break;
-                    case "multiline":        style.Multiline       = ParseBool(value);   break;
-                    case "layout":           style.Layout          = ParseLayout(value); break;
 
                     case string x: throw new NotSupportedException($"Unknown style property {x}");
                 }
@@ -186,17 +195,6 @@ namespace Ngco
                     return new Color(rgb[0], rgb[1], rgb[2]);
 
                 default: throw new NotSupportedException($"Unknown color {value}");
-            }
-        }
-
-        bool ParseBool(string value)
-        {
-            switch (value.ToLower())
-            {
-                case "true":
-                case "1": return true;
-
-                default: return false;
             }
         }
 

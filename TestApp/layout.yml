@@ -6,18 +6,7 @@ styles:
       text-color: white
       text-size: 30
       font-family: Arial
-      focusable: false
-      enabled: true
-      multiline: false
       corner-radius: 0
-      layout: 
-        width: 0
-        height: 0
-        vertical-alignment: stretch
-        horizontal-alignment: stretch
-        margin: 5
-        padding: 5
-        spacing: 5
   - hbox > .testing:
       text-color: green
       text-size: 75
@@ -26,9 +15,7 @@ styles:
       text-size: 75
   - label .desc:
       text-color: rgb(109, 109, 109)
-      multiline: true
   - button:
-      focusable: true
       background-color: rgb(225, 225, 225)
   - "button :hover":
       background-color: rgb(180, 213, 230)
@@ -41,55 +28,50 @@ styles:
   - textbox:
       background-color: white
       outline-color: blue
-      focusable: true
       text-color: black
-      layout:
-        width: 400
   - "textbox :focused":
       outline-color: red
 
 widgets:
   - vbox:
     - label:
-      - Testing Labels!
+        - text: Testing Labels!
     - label:
-      - Some more testing
+        - text: Some more testing
     - textbox:
-        - label:
-            - Please edit this text...
+        - text: Please edit this text...
     - hbox:
       - image:
-        - cat.png
+        - path: .\cat.png
       - vbox:
-        - label:
-          - CAT
-          - class: header
-        - label:
-          - The cat (Felis catus, or Felis silvestris catus, literally "woodland cat"),\noften referred to as the domestic cat to distinguish from other felids\nand felines, is a small, typically furry, carnivorous mammal.
-          - class: desc
+        - label: 
+            - text: CAT
+            - class: header
+        - label: 
+            - text : |
+                The cat (Felis catus, or Felis silvestris catus, literally "woodland cat"),
+                often referred to as the domestic cat to distinguish from other felids
+                and felines, is a small, typically furry, carnivorous mammal.
+            - class: desc
+            - multiline: true
     - button:
-      - id: button-a
-      - class: testing foo
-      - label:
-        - Button A
+        - id: button-a
+        - class: testing foo
+        - label: Button A
     - button:
         - id: button-b
         - class: radius
-        - label:
-            - Button B
+        - label: Button B
     - hbox:
         - button:
-            - label:
-                - Foo
+            - label: Foo
         - button:
-            - label:
-                - Bar
+            - label: Bar
         - button:
-            - label:
-                - Baz
+            - label:  Baz
     - hbox:
         - label:
-            - And even more
+            - text: And even more
             - class: testing
-        - label:
-            - Aaaaand more
+        - label: 
+            - text: Aaaaand more
