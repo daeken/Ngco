@@ -5,10 +5,12 @@ namespace Ngco.Widgets
     public abstract class BaseContainer : BaseWidget
     {
         public readonly List<BaseWidget> Children = new List<BaseWidget>();
-        
+
         public override IEnumerator<BaseWidget> GetEnumerator() => Children.GetEnumerator();
 
         public MutualExclusionToken Token = new MutualExclusionToken();
+
+        public abstract string[] ChildPropertyKeys { get; }
 
         public void Add(BaseWidget widget)
         {

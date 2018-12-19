@@ -51,7 +51,7 @@ namespace Ngco
             return widgets;
         }
 
-        BaseWidget ParseNode(YamlMappingNode node)
+        BaseWidget ParseNode(YamlMappingNode node, BaseWidget parent = null)
         {
             var    (clsNode, body) = node.Children.First();
             string cls             = clsNode.ToString().ToLower();
@@ -62,6 +62,7 @@ namespace Ngco
             {
                 case "button":      widget = new Button();      break;
                 case "checkbox":    widget = new CheckBox();    break;
+                case "grid":        widget = new Grid();        break;
                 case "hbox":        widget = new HBox();        break;
                 case "image":       widget = new Image();       break;
                 case "label":       widget = new Label();       break;
@@ -91,6 +92,14 @@ namespace Ngco
                     
                     index--;
                 }
+                else if(parent is BaseContainer container && container.ChildPropertyKeys.Contains(key))
+                {
+                    widget.ExtraProperties.Add(key, value);
+
+                    subNode.Children.Remove(sub);
+
+                    index--;
+                }
             }
 
             widget.Load(properties);
@@ -101,42 +110,42 @@ namespace Ngco
                 {
                     var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
                     string key                  = keyNode.ToString().ToLower();
+                    string value                = valueNode.ToString();
 
-                    if (widget is BaseContainer container)
+                    switch (key)
                     {
-                        if (valueNode is YamlSequenceNode || valueNode is YamlMappingNode)
-                        {
-                            BaseWidget child = ParseNode((YamlMappingNode)sub);
+                        case "id":
+                            widget.SetId(value);
+                            break;
+                        case "class":
+                            widget.AddClass(value);
+                            break;
+                        case "enabled":
+                            widget.Enabled = ParseBool(value);
+                            break;
+                        case "focusable":
+                            if (widget.IsFocusable)
+                                widget.Focusable = ParseBool(value);
+                            else
+                                throw new NotSupportedException($"{key} is not valid for this widget");
+                            break;
+                        case "layout":
+                            widget.Layout = ParseLayout(value);
+                            break;
+                        default:
+                            if (widget is BaseContainer container)
+                            {
+                                if (valueNode is YamlSequenceNode || valueNode is YamlMappingNode)
+                                {
+                                    BaseWidget child = ParseNode((YamlMappingNode)sub, widget);
 
-                            container.Add(child);
-                        }
-                    }
-                    else
-                    {
-                        string value = valueNode.ToString();
+                                    container.Add(child);
+                                }
+                            }
+                            else
+                                throw new NotSupportedException($"Unknown property for widget: {key}");
 
-                        switch (key)
-                        {
-                            case "id":
-                                widget.SetId(value);
-                                break;
-                            case "class":
-                                widget.AddClass(value);
-                                break;
-                            case "enabled":
-                                widget.Enabled = ParseBool(value);
-                                break;
-                            case "focusable":
-                                if (widget.IsFocusable)
-                                    widget.Focusable = ParseBool(value);
-                                else
-                                    throw new NotSupportedException($"{key} is not valid for this widget");
-                                break;
-                            case "layout":
-                                widget.Layout = ParseLayout(value);
-                                break;
-                            default: throw new NotSupportedException($"Unknown property for widget: {key}");
-                        }
+                            break;
                     }
                 }
             }

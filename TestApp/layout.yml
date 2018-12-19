@@ -68,9 +68,7 @@ widgets:
         - radiobutton:
             - label: radio3
     - button:
-        - id: button-a
-        - class: testing foo
-        - label: Button A
+        - label: Foo
     - button:
         - id: button-b
         - class: radius
