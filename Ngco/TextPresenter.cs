@@ -7,45 +7,32 @@ namespace Ngco
     {
         public const int CaretFrameInterval = 15;
 
-        private int selectionStart;
-        private int selectionEnd;
-        private int caretPosition;
-        private int caretFrameCount;
+        private readonly BaseWidget Owner;
 
-        private bool renderCaret;
-        private bool showCaret;
+        public int SelectionStart  { get; set; }
+        public int SelectionEnd    { get; set; }
+        public int CaretPosition   { get; set; }
+        public int CaretFrameCount { get; set; }
 
-        private SKPaint selectionBackground;
-        private SKPaint selectionForeground;
-        private SKPaint foreground;
-        private SKPaint background;
+        public bool RenderCaret { get; set; }
+        public bool ShowCaret   { get; set; }
 
-        private BaseWidget Owner;
-
-        public int SelectionStart  { get => selectionStart;  set => selectionStart = value; }
-        public int SelectionEnd    { get => selectionEnd;    set => selectionEnd = value; }
-        public int CaretPosition   { get => caretPosition;   set => caretPosition = value; }
-        public int CaretFrameCount { get => caretFrameCount; set => caretFrameCount = value; }
-
-        public bool RenderCaret { get => renderCaret; set => renderCaret = value; }
-        public bool ShowCaret   { get => showCaret;   set => showCaret = value; }
-
-        public SKPaint SelectionBackground { get => selectionBackground; set => selectionBackground = value; }
-        public SKPaint SelectionForeground { get => selectionForeground; set => selectionForeground = value; }
-        public SKPaint Foreground          { get => foreground;          set => foreground = value; }
-        public SKPaint Background          { get => background;          set => background = value; }
+        public SKPaint SelectionBackground { get; set; }
+        public SKPaint SelectionForeground { get; set; }
+        public SKPaint Foreground          { get; set; }
+        public SKPaint Background          { get; set; }
 
         public TextPresenter(BaseWidget owner)
         {
             Owner = owner;
 
-            selectionBackground = new SKPaint
+            SelectionBackground = new SKPaint
             {
                 Color       = Color.Blue,
                 IsAntialias = true,
             };
 
-            selectionForeground = new SKPaint
+            SelectionForeground = new SKPaint
             {
                 Color       = Color.White,
                 IsAntialias = true,
@@ -53,7 +40,7 @@ namespace Ngco
                 Typeface    = SKTypeface.FromFamilyName(owner.Style.FontFamily ?? "Arial")
             };
 
-            foreground = new SKPaint
+            Foreground = new SKPaint
             {
                 Color       = owner.Style.TextColor,
                 IsAntialias = true,
@@ -61,7 +48,7 @@ namespace Ngco
                 Typeface    = SKTypeface.FromFamilyName(owner.Style.FontFamily ?? "Arial")
             };
 
-            showCaret = false;
+            ShowCaret = false;
         }
 
         public TextPosition GetRealPosition(string text, int position,SKPaint paint)

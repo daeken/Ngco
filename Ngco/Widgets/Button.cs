@@ -47,7 +47,7 @@ namespace Ngco.Widgets
         public override void OnMeasure(Size region)
         {
             Label.OnMeasure(new Size(region.Width  - (Layout.Padding.Left + Layout.Padding.Right),
-                                   region.Height - (Layout.Padding.Up   + Layout.Padding.Down)));
+                                     region.Height - (Layout.Padding.Up   + Layout.Padding.Down)));
 
             BoundingBox = new Rect(new Point(0, 0), new Size(Label.BoundingBox.Size.Width  + Layout.Padding.Left + Layout.Padding.Right,
                                                              Label.BoundingBox.Size.Height + Layout.Padding.Up   + Layout.Padding.Down));

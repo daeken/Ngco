@@ -7,16 +7,8 @@ namespace Ngco
 {
     public class Context : IEnumerable<BaseWidget>
     {
-        public static Context Instance;
-
         public readonly IRenderer Renderer;
         public readonly List<Style> Styles = new List<Style>();
-
-        public Point       MouseLocation;
-        public MouseButton MouseButtons;
-        public Modifier    Modifiers;
-
-        public BaseWidget Widget;
 
         BaseWidget _Focused;
 
@@ -32,7 +24,13 @@ namespace Ngco
             }
         }
 
-        public Style BaseStyle;
+        public static Context Instance { get; set; }
+
+        public Point       MouseLocation { get; set; }
+        public MouseButton MouseButtons  { get; set; }
+        public Modifier    Modifiers     { get; set; }
+        public BaseWidget  Widget        { get; set; }
+        public Style       BaseStyle     { get; set; }
 
         public Context(IRenderer renderer)
         {

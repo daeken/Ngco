@@ -7,8 +7,6 @@ namespace Ngco
 {
     public struct MutualExclusionToken
     {
-        private BaseWidget _owner;
-
-        public BaseWidget Owner { get => _owner; set => _owner = value; }
+        public BaseWidget Owner { get; set; }
     }
 }

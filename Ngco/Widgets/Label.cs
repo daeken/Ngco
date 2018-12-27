@@ -49,7 +49,6 @@ namespace Ngco.Widgets
 
         public override void OnMeasure(Size region)
         {
-
             string[] lines = Multiline ? Text.Split("\n", StringSplitOptions.RemoveEmptyEntries) : new string[] { Text };
 
             BoundingBox = new Rect(new Point(), new Size((int)Math.Ceiling(TextPresenter.Foreground.MeasureText(lines.OrderByDescending(s => s.Length).First())),
@@ -66,8 +65,7 @@ namespace Ngco.Widgets
 
                 if (TextPresenter.CaretFrameCount > TextPresenter.CaretFrameInterval)
                 {
-                    TextPresenter.RenderCaret = !TextPresenter.RenderCaret;
-
+                    TextPresenter.RenderCaret     = !TextPresenter.RenderCaret;
                     TextPresenter.CaretFrameCount = 0;
                 }
             }
@@ -126,8 +124,6 @@ namespace Ngco.Widgets
 
         public override bool KeyDown(Key key)
         {
-            StringBuilder builder = new StringBuilder(Text);
-
             switch (key)
             {
                 case Key.Left:

@@ -6,14 +6,15 @@ namespace Ngco
     {
         public static Size Infinite = new Size(-1, -1);
 
-        public int Width, Height;
-        
         public Size(int width, int height)
         {
             Width  = width;
             Height = height;
         }
-        
+
+        public int Width  { get; set; }
+        public int Height { get; set; }
+
         public static Size operator +(Size a, Size b) => 
             new Size(
                 a.Width  == -1 || b.Width  == -1 ? -1 : a.Width  + b.Width, 
