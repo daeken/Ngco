@@ -6,7 +6,7 @@ namespace Ngco
     public class Style
     {
         public readonly List<Style> Parents = new List<Style>();
-        public readonly Selector Selector;
+        public readonly Selector    Selector;
 
         public Style(string selector = "") =>
             Selector = new Selector(selector);

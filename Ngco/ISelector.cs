@@ -38,21 +38,21 @@ namespace Ngco
 
     public class IdSelector : ISelector
     {
-        public string Id;
+        public string Id { get; set; }
 
         public BaseWidget Match(BaseWidget widget) => Id == widget.Id ? widget : null;
     }
 
     public class ClassSelector : ISelector
     {
-        public string Class;
+        public string Class { get; set; }
 
         public BaseWidget Match(BaseWidget widget) => widget.Classes.Contains(Class) ? widget : null;
     }
 
     public class WidgetSelector : ISelector
     {
-        public string Class;
+        public string Class { get; set; }
 
         public BaseWidget Match(BaseWidget widget) => Class.ToLower() == widget.GetType().Name.ToLower() ? widget : null;
     }

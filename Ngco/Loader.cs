@@ -39,7 +39,7 @@ namespace Ngco
                     case "widgets":
                         foreach (var widgetNode in (YamlSequenceNode)node)
                         {
-                            var widget = loader.ParseNode((YamlMappingNode)widgetNode);
+                            var widget  = loader.ParseNode((YamlMappingNode)widgetNode);
                             if (widget != null) widgets.Add(widget);
                         }
                         break;

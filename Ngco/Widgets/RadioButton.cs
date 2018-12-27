@@ -9,7 +9,7 @@ namespace Ngco.Widgets
     public class RadioButton : BaseWidget
     {
         int _RadioRadius = 10;
-        int _RadioSpace = 5;
+        int _RadioSpace  = 5;
 
         Point _RadioPosition;
 

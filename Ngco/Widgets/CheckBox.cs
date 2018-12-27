@@ -83,9 +83,8 @@ L 9.582031 22 C 9.929688 22.347656 10.476563 22.613281
             _CheckBoxPosition  = new Point(Layout.Padding.Left, (BoundingBox.Size.Height / 2) - (_BoxLength / 2));
             _CheckBoxPosition += BoundingBox.TopLeft;
             _CheckBoxSize      = new Point(_BoxLength, _BoxLength);
-
-            _PositionMatrix = SKMatrix.MakeTranslation(_CheckBoxPosition.X + _CheckBoxSignPadding, _CheckBoxPosition.Y + _CheckBoxSignPadding);
-            _RenderedCheck  = new SKPath(_CheckMarkPath);
+            _PositionMatrix    = SKMatrix.MakeTranslation(_CheckBoxPosition.X + _CheckBoxSignPadding, _CheckBoxPosition.Y + _CheckBoxSignPadding);
+            _RenderedCheck     = new SKPath(_CheckMarkPath);
 
             _RenderedCheck.Transform(_ScaleMatrix);
             _RenderedCheck.Transform(_PositionMatrix);
@@ -107,7 +106,7 @@ L 9.582031 22 C 9.929688 22.347656 10.476563 22.613281
         public override void OnMeasure(Size region)
         {
             Label.OnMeasure(new Size(region.Width - (Layout.Padding.Left + Layout.Padding.Right + _BoxLength + _BoxSpace),
-                region.Height - (Layout.Padding.Up + Layout.Padding.Down)));
+                                    region.Height - (Layout.Padding.Up + Layout.Padding.Down)));
 
             BoundingBox = new Rect(new Point(0, 0), new Size(Label.BoundingBox.Size.Width + _BoxSpace + _BoxLength
                 + Layout.Padding.Left + Layout.Padding.Right,

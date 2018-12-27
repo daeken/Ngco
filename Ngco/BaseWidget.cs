@@ -22,9 +22,6 @@ namespace Ngco
 
         public virtual void Load(Dictionary<string,string> properties) { }
 
-        public string     Id;
-        public BaseWidget Parent;
-
         public Rect BoundingBox { get; protected set; }
 
         /// <summary>
@@ -101,6 +98,9 @@ namespace Ngco
                 _MouseCurrentlyClicked = value;
             }
         }
+
+        public string     Id     { get; set; }
+        public BaseWidget Parent { get; set; }
 
         public virtual bool MouseDown(MouseButton button, Point location)
         {
@@ -218,7 +218,7 @@ namespace Ngco
 
         public void ApplyLayoutSize()
         {
-            if (Layout.Width != 0)  SetSize(new Size(Layout.Width, BoundingBox.Size.Height));
+            if (Layout.Width  != 0) SetSize(new Size(Layout.Width, BoundingBox.Size.Height));
             if (Layout.Height != 0) SetSize(new Size(BoundingBox.Size.Width, Layout.Height));
         }
 
