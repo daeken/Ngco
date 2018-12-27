@@ -32,12 +32,23 @@ namespace TestApp
                 Context.Widget = container;
             }
 
-            Context.Find("#button-a").Click(_ => "A".Print());
-            Context.Find("#button-b").Click(_ => "B".Print());
+            /*var grid = Context.Find("#grid").First() as BaseContainer;
 
-            Context.Find("hbox > button").Skip(1).Take(1).AddClass("testing");
+            if (grid != null)
+            {
+                int i = 0;
 
-            Context.InvalidateLayout();
+                do
+                {
+                    grid.Add(new Button(new Label("button " + i)));
+
+                    i++;
+                }
+                while (i < 64);
+            }
+            /*Context.Find("#button-b").Click(_ => "B".Print());
+
+            Context.Find("hbox > button").Skip(1).Take(1).AddClass("testing");*/
         }
     }
 }

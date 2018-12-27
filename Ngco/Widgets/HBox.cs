@@ -4,6 +4,8 @@ namespace Ngco.Widgets
 {
     public class HBox : BaseContainer
     {
+        public override string[] ChildPropertyKeys => new string[0];
+
         public override void OnMeasure(Size region)
         {
             Size rowSize     = new Size(region.Width, region.Height / Children.Count);

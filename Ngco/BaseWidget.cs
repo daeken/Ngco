@@ -11,7 +11,6 @@ namespace Ngco
     {
         public readonly List<string> Classes = new List<string>();
         public readonly Style Style = new Style();
-
         public virtual string[] PropertyKeys { get; } = new string[0];
 
         public virtual bool IsFocusable => false;
@@ -23,6 +22,8 @@ namespace Ngco
         public virtual void Load(Dictionary<string,string> properties) { }
 
         public Rect BoundingBox { get; protected set; }
+
+        public Dictionary<string, string> ExtraProperties { get; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Enabled
@@ -78,6 +79,11 @@ namespace Ngco
         internal bool StylesDirty = true;
         private  bool _MouseOver;
         private  bool _MouseCurrentlyClicked;
+
+        public bool TryGetPropertyValue(string key, out string value)
+        {
+            return ExtraProperties.TryGetValue(key, out value);
+        }
 
         public bool MouseOver
         {
