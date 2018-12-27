@@ -9,16 +9,14 @@ namespace Ngco.Widgets
     {
         List<Section> layoutRows    = new List<Section>();
         List<Section> layoutColumns = new List<Section>();
-
-        int rows;
-        int columns;
         bool autoRows;
         bool autoColumns;
 
         public bool AutoColumns { get => autoColumns || Columns == 0; set => autoColumns = value; }
-        public bool AutoRows { get => autoRows || Rows == 0; set => autoRows = value; }
-        public int Columns { get => columns; set => columns = value; }
-        public int Rows { get => rows; set => rows = value; }
+        public bool AutoRows    { get => autoRows    || Rows == 0;    set => autoRows    = value; }
+
+        public int Columns { get; set; }
+        public int Rows    { get; set; }
 
         public override string[] PropertyKeys { get; } = new string[] { "rows", "columns" };
 
@@ -88,8 +86,7 @@ namespace Ngco.Widgets
         {
             Point currentRowPosition = region.TopLeft;
 
-            var firstRow = layoutRows.FirstOrDefault();
-
+            var firstRow  = layoutRows.FirstOrDefault();
             if (firstRow != null)
             {
                 var currentColumn = layoutColumns.FirstOrDefault();
@@ -98,13 +95,11 @@ namespace Ngco.Widgets
 
                 for (int i = 1; i < layoutColumns.Count; i++)
                 {
-                    var column = layoutColumns[i];
-
+                    var column  = layoutColumns[i];
                     var topLeft = new Point(currentColumn.Bounds.TopLeft.X + currentColumn.Bounds.Size.Width, 
                         currentColumn.Bounds.TopLeft.Y);
 
                     column.Bounds = new Rect(topLeft, column.Bounds.Size);
-
                     currentColumn = column;
                 }
 
@@ -194,7 +189,7 @@ namespace Ngco.Widgets
                     {
                         if (int.TryParse(gridColumn, out int childColumn))
                         {
-                            if (childColumn < columns)
+                            if (childColumn < Columns)
                             {
                                 layoutColumns[childColumn].Add(child);
                                 columnPlaced = true;
@@ -259,7 +254,7 @@ namespace Ngco.Widgets
                         row.Bounds = new Rect(row.Bounds.TopLeft, new Size()
                         {
                             Height = row.Length,
-                            Width = row.Bounds.Size.Width
+                            Width  = row.Bounds.Size.Width
                         });
                     }
 
@@ -271,7 +266,7 @@ namespace Ngco.Widgets
                         column.Bounds = new Rect(column.Bounds.TopLeft, new Size()
                         {
                             Height = row.Bounds.Size.Height,
-                            Width = row.Length
+                            Width  = row.Length
                         });
                     }
                 }
