@@ -10,7 +10,7 @@ namespace Ngco.Widgets
 
         public MutualExclusionToken Token = new MutualExclusionToken();
 
-        public void Add(BaseWidget widget)
+        public virtual void Add(BaseWidget widget)
         {
             widget.Parent = this;
             Children.Add(widget);
@@ -19,7 +19,7 @@ namespace Ngco.Widgets
                 Token.Owner = widget;
         }
 
-        public void Remove(BaseWidget widget)
+        public virtual void Remove(BaseWidget widget)
         {
             Children.Remove(widget);
             widget.Parent = null;

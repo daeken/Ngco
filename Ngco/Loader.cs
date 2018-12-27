@@ -62,6 +62,7 @@ namespace Ngco
             {
                 case "button":      widget = new Button();      break;
                 case "checkbox":    widget = new CheckBox();    break;
+                case "frame":       widget = new Frame();       break;
                 case "hbox":        widget = new HBox();        break;
                 case "image":       widget = new Image();       break;
                 case "label":       widget = new Label();       break;

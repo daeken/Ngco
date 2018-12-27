@@ -59,6 +59,9 @@ widgets:
         - checked: true
     - checkbox:
         - label: checkbox2
+    - frame:
+        - label: 
+            - text: frame
     - vbox:
         - radiobutton:
             - label: radio1
