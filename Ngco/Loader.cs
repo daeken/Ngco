@@ -1,7 +1,6 @@
 using Ngco.Widgets;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using YamlDotNet.RepresentationModel;
@@ -35,7 +34,6 @@ namespace Ngco
                         {
                             loader.ParseStyle((YamlMappingNode)style);
                         }
-
                         break;
 
                     case "widgets":
@@ -44,7 +42,6 @@ namespace Ngco
                             var widget = loader.ParseNode((YamlMappingNode)widgetNode);
                             if (widget != null) widgets.Add(widget);
                         }
-
                         break;
 
                     case string x: throw new NotSupportedException(x);
@@ -63,12 +60,14 @@ namespace Ngco
 
             switch (cls)
             {
-                case "button":  widget = new Button();  break;
-                case "hbox":    widget = new HBox();    break;
-                case "image":   widget = new Image();   break;
-                case "label":   widget = new Label();   break;
-                case "textbox": widget = new TextBox(); break;
-                case "vbox":    widget = new VBox();    break;
+                case "button":      widget = new Button();      break;
+                case "checkbox":    widget = new CheckBox();    break;
+                case "hbox":        widget = new HBox();        break;
+                case "image":       widget = new Image();       break;
+                case "label":       widget = new Label();       break;
+                case "radiobutton": widget = new RadioButton(); break;
+                case "textbox":     widget = new TextBox();     break;
+                case "vbox":        widget = new VBox();        break;
 
                 default: throw new NotSupportedException($"Unknown widget class: {cls}");
             }
@@ -79,10 +78,10 @@ namespace Ngco
 
             for (int index = 0; index < subNode.Children.Count; index++)
             {
-                var sub                  = subNode.Children[index];
-                var (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
-                string key               = keyNode.ToString().ToLower();
-                string value             = valueNode.ToString();
+                var    sub                  = subNode.Children[index];
+                var    (keyNode, valueNode) = ((YamlMappingNode)sub).Children.First();
+                string key                  = keyNode.ToString().ToLower();
+                string value                = valueNode.ToString();
 
                 if (widget.PropertyKeys.Contains(key))
                 {
