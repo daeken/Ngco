@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using YamlDotNet.RepresentationModel;
+using System.Text;
 
 namespace Ngco.Widgets
 {
@@ -35,9 +36,9 @@ namespace Ngco.Widgets
 
         public override void Load(Dictionary<string, string> properties)
         {
-            if (properties.TryGetValue("text", out string imagePath))
+            if (properties.TryGetValue("text", out string text))
             {
-                Label = new Label(imagePath);
+                Label = new Label(text);
             }
         }
 
@@ -47,6 +48,9 @@ namespace Ngco.Widgets
         {
             canvas.Save();
             canvas.ClipRect(BoundingBox);
+
+            if (Focused)
+                ((Label)Label).TextPresenter.ShowCaret = true;
 
             Point position = new Point(BoundingBox.TopLeft.X,  BoundingBox.TopLeft.Y);
             Point size     = new Point(BoundingBox.Size.Width, BoundingBox.Size.Height);
@@ -70,34 +74,74 @@ namespace Ngco.Widgets
 
         public override bool KeyDown(Key key)
         {
-            if (key == Key.Backspace)
+            if (Focused)
             {
-                int Limit = ((Label)_Label).Text.Length > 0 ? ((Label)_Label).Text.Length : 1;
+                Label         label   = (Label)Label;
+                StringBuilder builder = new StringBuilder(label.Text);
 
-                ((Label)_Label).Text = ((Label)_Label).Text.Substring(0, Limit - 1);
+                switch (key)
+                {
+                    case Key.Backspace:
+                        if (label.TextPresenter.CaretPosition > 0)
+                        {
+                            builder.Remove(label.TextPresenter.CaretPosition - 1, 1);
+
+                            label.Text = builder.ToString();
+
+                            label.TextPresenter.CaretPosition--;
+                        }
+                        break;
+                    case Key.Delete:
+                        if (label.TextPresenter.CaretPosition < label.Text.Length)
+                        {
+                            builder.Remove(label.TextPresenter.CaretPosition, 1);
+
+                            label.Text = builder.ToString();
+                        }
+                        break;
+                }
+
+                label.KeyDown(key);
+
+                if (key != Key.Enter && key != Key.Space) return false;
+
+                MouseCurrentlyClicked = true;
             }
-
-            if (key != Key.Enter && key != Key.Space) return false;
-
-            MouseCurrentlyClicked = true;
 
             return true;
         }
 
         public override bool KeyUp(Key key)
         {
-            if (key != Key.Enter && key != Key.Space) return false;
+            if (Focused)
+            {
+                Label.KeyUp(key);
 
-            MouseCurrentlyClicked = false;
+                if (key != Key.Enter && key != Key.Space) return false;
 
-            Click();
+                MouseCurrentlyClicked = false;
+
+                Click();
+            }
 
             return true;
         }
 
         public override bool KeyPress(char key)
         {
-            ((Label)_Label).Text += key.ToString();
+            if (Focused)
+            {
+                Label         label   = (Label)Label;
+                StringBuilder builder = new StringBuilder(label.Text);
+
+                builder.Insert(label.TextPresenter.CaretPosition, key);
+
+                label.Text = builder.ToString();
+
+                label.TextPresenter.CaretPosition++;
+
+                label.TextPresenter.SelectionStart = label.TextPresenter.SelectionEnd = label.TextPresenter.CaretPosition;
+            }
 
             return false;
         }
@@ -107,6 +151,8 @@ namespace Ngco.Widgets
             if (BoundingBox.Contains(location) && button == MouseButton.Left) Click();
 
             MouseCurrentlyClicked = false;
+
+            Label.MouseUp(button, location);
         }
 
         public void Click()
@@ -124,8 +170,10 @@ namespace Ngco.Widgets
 
         public override void OnMeasure(Size region)
         {
+            ((Label)Label).TextPresenter = new TextPresenter(Label);
+
             Label.OnMeasure(new Size(region.Width  - (Layout.Padding.Left + Layout.Padding.Right),
-                                   region.Height - (Layout.Padding.Up   + Layout.Padding.Down)));
+                                     region.Height - (Layout.Padding.Up   + Layout.Padding.Down)));
 
             BoundingBox = new Rect(new Point(0, 0), new Size(Label.BoundingBox.Size.Width  + Layout.Padding.Left + Layout.Padding.Right,
                                                              Label.BoundingBox.Size.Height + Layout.Padding.Up   + Layout.Padding.Down));
